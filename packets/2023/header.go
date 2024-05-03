@@ -1,30 +1,20 @@
 package f1_2023
 
+import "github.com/DaanV2/go-f1-library/enums"
+
 type PacketHeader struct {
-	// 2023
-	PacketFormat uint16 `json:"packet_format"`
-	// Game year - last two digits e.g. 23
-	GameYear uint8 `json:"game_year"`
-	// Game major version - "X.00"
-	GameMajorVersion uint8 `json:"game_major_version"`
-	// Game minor version - "1.XX"
-	GameMinorVersion uint8 `json:"game_minor_version"`
-	// Version of this packet type, all start from 1
-	PacketVersion uint8 `json:"packet_version"`
-	// Identifier for the packet type, see below
-	PacketId uint8 `json:"packet_id"`
-	// Unique identifier for the session
-	SessionUID uint64 `json:"session_uid"`
-	// Session timestamp
-	SessionTime float32 `json:"session_time"`
-	// Identifier for the frame the data was retrieved on
-	FrameIdentifier uint32 `json:"frame_identifier"`
-	// Overall identifier for the frame the data was retrieved on, doesn't go back after flashbacks
-	OverallFrameIdentifier uint32 `json:"overall_frame_identifier"`
-	// Index of player's car in the array
-	PlayerCarIndex uint8 `json:"player_car_index"`
-	// Index of secondary player's car in the array (splitscreen), 255 if no second player
-	SecondaryPlayerCarIndex uint8 `json:"secondary_player_car_index"`
+	PacketFormat            enums.PacketFormat // uint16, 2023
+	GameYear                uint8              // Game year - last two digits e.g. 23
+	GameMajorVersion        uint8              // Game major version - "X.00"
+	GameMinorVersion        uint8              // Game minor version - "1.XX"
+	PacketVersion           uint8              // Version of this packet type, all start from 1
+	PacketId                uint8              // Identifier for the packet type, see below
+	SessionUID              uint64             // Unique identifier for the session
+	SessionTime             float32            // Session timestamp
+	FrameIdentifier         uint32             // Identifier for the frame the data was retrieved on
+	OverallFrameIdentifier  uint32             // Overall identifier for the frame the data was retrieved on, doesn't go back after flashbacks
+	PlayerCarIndex          uint8              // Index of player's car in the array
+	SecondaryPlayerCarIndex uint8              // Index of secondary player's car in the array (splitscreen), 255 if no second player
 }
 
 func (p *PacketHeader) HasSecondaryPlayer() bool {
