@@ -1,139 +1,163 @@
 package f1_2023
 
-type Driver uint8
+import (
+	"github.com/DaanV2/go-f1-library/constants"
+	"github.com/DaanV2/go-f1-library/game"
+)
+
+var _ game.Drivers = &Drivers{}
+
+type (
+	Drivers struct{}
+	Driver  uint8
+)
+
+// Get implements game.Drivers.
+func (d *Drivers) Get(id uint8) game.Driver {
+	return Driver(id)
+}
+
+// Max implements game.Drivers.
+func (d *Drivers) Max() uint8 {
+	return Driver_Max.Id()
+}
 
 const (
-	CarlosSainz         Driver = 0
-	DaniilKvyat         Driver = 1
-	DanielRicciardo     Driver = 2
-	FernandoAlonso      Driver = 3
-	FelipeMassa         Driver = 4
-	KimiRäikkönen       Driver = 6
-	LewisHamilton       Driver = 7
-	MaxVerstappen       Driver = 9
-	NicoHulkenburg      Driver = 10
-	KevinMagnussen      Driver = 11
-	RomainGrosjean      Driver = 12
-	SebastianVettel     Driver = 13
-	SergioPerez         Driver = 14
-	ValtteriBottas      Driver = 15
-	EstebanOcon         Driver = 17
-	LanceStroll         Driver = 19
-	ArronBarnes         Driver = 20
-	MartinGiles         Driver = 21
-	AlexMurray          Driver = 22
-	LucasRoth           Driver = 23
-	IgorCorreia         Driver = 24
-	SophieLevasseur     Driver = 25
-	JonasSchiffer       Driver = 26
-	AlainForest         Driver = 27
-	JayLetourneau       Driver = 28
-	EstoSaari           Driver = 29
-	YasarAtiyeh         Driver = 30
-	CallistoCalabresi   Driver = 31
-	NaotaIzum           Driver = 32
-	HowardClarke        Driver = 33
-	WilheimKaufmann     Driver = 34
-	MarieLaursen        Driver = 35
-	FlavioNieves        Driver = 36
-	PeterBelousov       Driver = 37
-	KlimekMichalski     Driver = 38
-	SantiagoMoreno      Driver = 39
-	BenjaminCoppens     Driver = 40
-	NoahVisser          Driver = 41
-	GertWaldmuller      Driver = 42
-	JulianQuesada       Driver = 43
-	DanielJones         Driver = 44
-	ArtemMarkelov       Driver = 45
-	TadasukeMakino      Driver = 46
-	SeanGelael          Driver = 47
-	NyckDeVries         Driver = 48
-	JackAitken          Driver = 49
-	GeorgeRussell       Driver = 50
-	MaximilianGünther   Driver = 51
-	NireiFukuzumi       Driver = 52
-	LucaGhiotto         Driver = 53
-	LandoNorris         Driver = 54
-	SérgioSetteCâmara   Driver = 55
-	LouisDelétraz       Driver = 56
-	AntonioFuoco        Driver = 57
-	CharlesLeclerc      Driver = 58
-	PierreGasly         Driver = 59
-	AlexanderAlbon      Driver = 62
-	NicholasLatifi      Driver = 63
-	DorianBoccolacci    Driver = 64
-	NikoKari            Driver = 65
-	RobertoMerhi        Driver = 66
-	ArjunMaini          Driver = 67
-	AlessioLorandi      Driver = 68
-	RubenMeijer         Driver = 69
-	RashidNair          Driver = 70
-	JackTremblay        Driver = 71
-	DevonButler         Driver = 72
-	LukasWeber          Driver = 73
-	AntonioGiovinazzi   Driver = 74
-	RobertKubica        Driver = 75
-	AlainProst          Driver = 76
-	AyrtonSenna         Driver = 77
-	NobuharuMatsushita  Driver = 78
-	NikitaMazepin       Driver = 79
-	GuanyaZhou          Driver = 80
-	MickSchumacher      Driver = 81
-	CallumIlott         Driver = 82
-	JuanManuelCorrea    Driver = 83
-	JordanKing          Driver = 84
-	MahaveerRaghunathan Driver = 85
-	TatianaCalderon     Driver = 86
-	AnthoineHubert      Driver = 87
-	GuilianoAlesi       Driver = 88
-	RalphBoschung       Driver = 89
-	MichaelSchumacher   Driver = 90
-	DanTicktum          Driver = 91
-	MarcusArmstrong     Driver = 92
-	ChristianLundgaard  Driver = 93
-	YukiTsunoda         Driver = 94
-	JehanDaruvala       Driver = 95
-	GulhermeSamaia      Driver = 96
-	PedroPiquet         Driver = 97
-	FelipeDrugovich     Driver = 98
-	RobertSchwartzman   Driver = 99
-	RoyNissany          Driver = 100
-	MarinoSato          Driver = 101
-	AidanJackson        Driver = 102
-	CasperAkkerman      Driver = 103
-	JensonButton        Driver = 109
-	DavidCoulthard      Driver = 110
-	NicoRosberg         Driver = 111
-	OscarPiastri        Driver = 112
-	LiamLawson          Driver = 113
-	JuriVips            Driver = 114
-	TheoPourchaire      Driver = 115
-	RichardVerschoor    Driver = 116
-	LirimZendeli        Driver = 117
-	DavidBeckmann       Driver = 118
-	AlessioDeledda      Driver = 121
-	BentViscaal         Driver = 122
-	EnzoFittipaldi      Driver = 123
-	MarkWebber          Driver = 125
-	JacquesVilleneuve   Driver = 126
-	CallieMayer         Driver = 127
-	NoahBell            Driver = 128
-	JakeHughes          Driver = 129
-	FrederikVesti       Driver = 130
-	OlliCaldwell        Driver = 131
-	LoganSargeant       Driver = 132
-	CemBolukbasi        Driver = 133
-	AyumuIwasa          Driver = 134
-	ClementNovalak      Driver = 135
-	JackDoohan          Driver = 136
-	AmauryCordeel       Driver = 137
-	DennisHauger        Driver = 138
-	CalanWilliams       Driver = 139
-	JamieChadwick       Driver = 140
-	KamuiKobayashi      Driver = 141
-	PastorMaldonado     Driver = 142
-	MikaHakkinen        Driver = 143
-	NigelMansell        Driver = 144
+	CarlosSainz         Driver = 0   // Carlos Sainz
+	DaniilKvyat         Driver = 1   // Daniil Kvyat
+	DanielRicciardo     Driver = 2   // Daniel Ricciardo
+	FernandoAlonso      Driver = 3   // Fernando Alonso
+	FelipeMassa         Driver = 4   // Felipe Massa
+	KimiRäikkönen       Driver = 6   // Kimi Räikkönen
+	LewisHamilton       Driver = 7   // Lewis Hamilton
+	MaxVerstappen       Driver = 9   // Max Verstappen
+	NicoHulkenburg      Driver = 10  // Nico Hulkenburg
+	KevinMagnussen      Driver = 11  // Kevin Magnussen
+	RomainGrosjean      Driver = 12  // Romain Grosjean
+	SebastianVettel     Driver = 13  // Sebastian Vettel
+	SergioPerez         Driver = 14  // Sergio Perez
+	ValtteriBottas      Driver = 15  // Valtteri Bottas
+	EstebanOcon         Driver = 17  // Esteban Ocon
+	LanceStroll         Driver = 19  // Lance Stroll
+	ArronBarnes         Driver = 20  // Arron Barnes
+	MartinGiles         Driver = 21  // Martin Giles
+	AlexMurray          Driver = 22  // Alex Murray
+	LucasRoth           Driver = 23  // Lucas Roth
+	IgorCorreia         Driver = 24  // Igor Correia
+	SophieLevasseur     Driver = 25  // Sophie Levasseur
+	JonasSchiffer       Driver = 26  // Jonas Schiffer
+	AlainForest         Driver = 27  // Alain Forest
+	JayLetourneau       Driver = 28  // Jay Letourneau
+	EstoSaari           Driver = 29  // Esto Saari
+	YasarAtiyeh         Driver = 30  // Yasar Atiyeh
+	CallistoCalabresi   Driver = 31  // Callisto Calabresi
+	NaotaIzum           Driver = 32  // Naota Izum
+	HowardClarke        Driver = 33  // Howard Clarke
+	WilheimKaufmann     Driver = 34  // Wilheim Kaufmann
+	MarieLaursen        Driver = 35  // Marie Laursen
+	FlavioNieves        Driver = 36  // Flavio Nieves
+	PeterBelousov       Driver = 37  // Peter Belousov
+	KlimekMichalski     Driver = 38  // Klimek Michalski
+	SantiagoMoreno      Driver = 39  // Santiago Moreno
+	BenjaminCoppens     Driver = 40  // Benjamin Coppens
+	NoahVisser          Driver = 41  // Noah Visser
+	GertWaldmuller      Driver = 42  // Gert Waldmuller
+	JulianQuesada       Driver = 43  // Julian Quesada
+	DanielJones         Driver = 44  // Daniel Jones
+	ArtemMarkelov       Driver = 45  // Artem Markelov
+	TadasukeMakino      Driver = 46  // Tadasuke Makino
+	SeanGelael          Driver = 47  // Sean Gelael
+	NyckDeVries         Driver = 48  // Nyck De Vries
+	JackAitken          Driver = 49  // Jack Aitken
+	GeorgeRussell       Driver = 50  // George Russell
+	MaximilianGünther   Driver = 51  // Maximilian Günther
+	NireiFukuzumi       Driver = 52  // Nirei Fukuzumi
+	LucaGhiotto         Driver = 53  // Luca Ghiotto
+	LandoNorris         Driver = 54  // Lando Norris
+	SérgioSetteCâmara   Driver = 55  // Sérgio Sette Câmara
+	LouisDelétraz       Driver = 56  // Louis Delétraz
+	AntonioFuoco        Driver = 57  // Antonio Fuoco
+	CharlesLeclerc      Driver = 58  // Charles Leclerc
+	PierreGasly         Driver = 59  // Pierre Gasly
+	AlexanderAlbon      Driver = 62  // Alexander Albon
+	NicholasLatifi      Driver = 63  // Nicholas Latifi
+	DorianBoccolacci    Driver = 64  // Dorian Boccolacci
+	NikoKari            Driver = 65  // Niko Kari
+	RobertoMerhi        Driver = 66  // Roberto Merhi
+	ArjunMaini          Driver = 67  // Arjun Maini
+	AlessioLorandi      Driver = 68  // Alessio Lorandi
+	RubenMeijer         Driver = 69  // Ruben Meijer
+	RashidNair          Driver = 70  // Rashid Nair
+	JackTremblay        Driver = 71  // Jack Tremblay
+	DevonButler         Driver = 72  // Devon Butler
+	LukasWeber          Driver = 73  // Lukas Weber
+	AntonioGiovinazzi   Driver = 74  // Antonio Giovinazzi
+	RobertKubica        Driver = 75  // Robert Kubica
+	AlainProst          Driver = 76  // Alain Prost
+	AyrtonSenna         Driver = 77  // Ayrton Senna
+	NobuharuMatsushita  Driver = 78  // Nobuharu Matsushita
+	NikitaMazepin       Driver = 79  // Nikita Mazepin
+	GuanyaZhou          Driver = 80  // Guanya Zhou
+	MickSchumacher      Driver = 81  // Mick Schumacher
+	CallumIlott         Driver = 82  // Callum Ilott
+	JuanManuelCorrea    Driver = 83  // Juan Manuel Correa
+	JordanKing          Driver = 84  // Jordan King
+	MahaveerRaghunathan Driver = 85  // Mahaveer Raghunathan
+	TatianaCalderon     Driver = 86  // Tatiana Calderon
+	AnthoineHubert      Driver = 87  // Anthoine Hubert
+	GuilianoAlesi       Driver = 88  // Guiliano Alesi
+	RalphBoschung       Driver = 89  // Ralph Boschung
+	MichaelSchumacher   Driver = 90  // Michael Schumacher
+	DanTicktum          Driver = 91  // Dan Ticktum
+	MarcusArmstrong     Driver = 92  // Marcus Armstrong
+	ChristianLundgaard  Driver = 93  // Christian Lundgaard
+	YukiTsunoda         Driver = 94  // Yuki Tsunoda
+	JehanDaruvala       Driver = 95  // Jehan Daruvala
+	GulhermeSamaia      Driver = 96  // Gulherme Samaia
+	PedroPiquet         Driver = 97  // Pedro Piquet
+	FelipeDrugovich     Driver = 98  // Felipe Drugovich
+	RobertSchwartzman   Driver = 99  // Robert Schwartzman
+	RoyNissany          Driver = 100 // Roy Nissany
+	MarinoSato          Driver = 101 // Marino Sato
+	AidanJackson        Driver = 102 // Aidan Jackson
+	CasperAkkerman      Driver = 103 // Casper Akkerman
+	JensonButton        Driver = 109 // Jenson Button
+	DavidCoulthard      Driver = 110 // David Coulthard
+	NicoRosberg         Driver = 111 // Nico Rosberg
+	OscarPiastri        Driver = 112 // Oscar Piastri
+	LiamLawson          Driver = 113 // Liam Lawson
+	JuriVips            Driver = 114 // Juri Vips
+	TheoPourchaire      Driver = 115 // Theo Pourchaire
+	RichardVerschoor    Driver = 116 // Richard Verschoor
+	LirimZendeli        Driver = 117 // Lirim Zendeli
+	DavidBeckmann       Driver = 118 // David Beckmann
+	AlessioDeledda      Driver = 121 // Alessio Deledda
+	BentViscaal         Driver = 122 // Bent Viscaal
+	EnzoFittipaldi      Driver = 123 // Enzo Fittipaldi
+	MarkWebber          Driver = 125 // Mark Webber
+	JacquesVilleneuve   Driver = 126 // Jacques Villeneuve
+	CallieMayer         Driver = 127 // Callie Mayer
+	NoahBell            Driver = 128 // Noah Bell
+	JakeHughes          Driver = 129 // Jake Hughes
+	FrederikVesti       Driver = 130 // Frederik Vesti
+	OlliCaldwell        Driver = 131 // Olli Caldwell
+	LoganSargeant       Driver = 132 // Logan Sargeant
+	CemBolukbasi        Driver = 133 // Cem Bolukbasi
+	AyumuIwasa          Driver = 134 // Ayumu Iwasa
+	ClementNovalak      Driver = 135 // Clement Novalak
+	JackDoohan          Driver = 136 // Jack Doohan
+	AmauryCordeel       Driver = 137 // Amaury Cordeel
+	DennisHauger        Driver = 138 // Dennis Hauger
+	CalanWilliams       Driver = 139 // Calan Williams
+	JamieChadwick       Driver = 140 // Jamie Chadwick
+	KamuiKobayashi      Driver = 141 // Kamui Kobayashi
+	PastorMaldonado     Driver = 142 // Pastor Maldonado
+	MikaHakkinen        Driver = 143 // Mika Hakkinen
+	NigelMansell        Driver = 144 // Nigel Mansell
+
+	Driver_Human Driver = 255 
+
+	Driver_Max = NigelMansell
 )
 
 func (d Driver) String() string {
@@ -241,7 +265,7 @@ func (d Driver) String() string {
 	case LandoNorris:
 		return "Lando Norris"
 	case SérgioSetteCâmara:
-		return "Sérgio Sette Câmara	"
+		return "Sérgio Sette Câmara"
 	case LouisDelétraz:
 		return "Louis Delétraz"
 	case AntonioFuoco:
@@ -400,7 +424,13 @@ func (d Driver) String() string {
 		return "Mika Hakkinen"
 	case NigelMansell:
 		return "Nigel Mansell"
-	default:
-		return "UNKNOWN"
+	case Driver_Human:
+		return "Human"
 	}
+
+	return constants.UNKNOWN
+}
+
+func (d Driver) Id() uint8 {
+	return uint8(d)
 }

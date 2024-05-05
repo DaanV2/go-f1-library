@@ -1,74 +1,98 @@
 package f1_2023
 
-type TeamId int16
+import (
+	"github.com/DaanV2/go-f1-library/constants"
+	"github.com/DaanV2/go-f1-library/game"
+)
+
+var _ game.Teams = &Teams{}
+
+type (
+	TeamId uint16
+	Teams struct{}
+)
+
+func (d *Teams) Get(id uint8) game.Team {
+	return TeamId(id)
+}
+
+func (d *Teams) Max() uint8 {
+	return Team_Max.Id()
+}
 
 const (
-	Mercedes                          TeamId = 0
-	Ferrari                           TeamId = 1
-	RedBullRacing                     TeamId = 2
-	Williams                          TeamId = 3
-	AstonMartin                       TeamId = 4
-	Alpine                            TeamId = 5
-	AlphaTauri                        TeamId = 6
-	Haas                              TeamId = 7
-	McLaren                           TeamId = 8
-	AlfaRomeo                         TeamId = 9
-	Mercedes2020                      TeamId = 85
-	Ferrari2020                       TeamId = 86
-	RedBull2020                       TeamId = 87
-	Williams2020                      TeamId = 88
-	RacingPoint2020                   TeamId = 89
-	Renault2020                       TeamId = 90
-	AlphaTauri2020                    TeamId = 91
-	Haas2020                          TeamId = 92
-	McLaren2020                       TeamId = 93
-	AlfaRomeo2020                     TeamId = 94
-	AstonMartinDB11V12                TeamId = 95
-	AstonMartinVantageF1Edition       TeamId = 96
-	AstonMartinVantageSafetyCar       TeamId = 97
-	FerrariF8Tributo                  TeamId = 98
-	FerrariRoma                       TeamId = 99
-	McLaren720S                       TeamId = 100
-	McLarenArtura                     TeamId = 101
-	MercedesAMGGTBlackSeriesSafetyCar TeamId = 102
-	MercedesAMGGTRPro                 TeamId = 103
-	F1CustomTeam                      TeamId = 104
-	Prema_21                          TeamId = 106
-	Uni_Virtuosi_21                   TeamId = 107
-	Carlin_21                         TeamId = 108
-	Hitech_21                         TeamId = 109
-	ArtGP_21                          TeamId = 110
-	MPMotorsport_21                   TeamId = 111
-	Charouz_21                        TeamId = 112
-	Dams_21                           TeamId = 113
-	Campos_21                         TeamId = 114
-	BWT_21                            TeamId = 115
-	Trident_21                        TeamId = 116
-	MercedesAMGGTBlackSeries          TeamId = 117
-	Mercedes_22                       TeamId = 118
-	Ferrari_22                        TeamId = 119
-	RedBullRacing_22                  TeamId = 120
-	Williams_22                       TeamId = 121
-	AstonMartin_22                    TeamId = 122
-	Alpine_22                         TeamId = 123
-	AlphaTauri_22                     TeamId = 124
-	Haas_22                           TeamId = 125
-	McLaren_22                        TeamId = 126
-	AlfaRomeo_22                      TeamId = 127
-	Konnersport_22                    TeamId = 128
-	Konnersport                       TeamId = 129
-	Prema_22                          TeamId = 130
-	Virtuosi_22                       TeamId = 131
-	Carlin_22                         TeamId = 132
-	MPMotorsport_22                   TeamId = 133
-	Charouz_22                        TeamId = 134
-	Dams_22                           TeamId = 135
-	Campos_22                         TeamId = 136
-	VanAmersfoortRacing_22            TeamId = 137
-	Trident_22                        TeamId = 138
-	Hitech_22                         TeamId = 139
-	ArtGP_22                          TeamId = 140
+	Mercedes                          TeamId = 0 // Mercedes
+	Ferrari                           TeamId = 1 // Ferrari
+	RedBullRacing                     TeamId = 2 // Red Bull Racing
+	Williams                          TeamId = 3 // Williams
+	AstonMartin                       TeamId = 4 // Aston Martin
+	Alpine                            TeamId = 5 // Alpine
+	AlphaTauri                        TeamId = 6 // Alpha Tauri
+	Haas                              TeamId = 7 // Haas
+	McLaren                           TeamId = 8 // McLaren
+	AlfaRomeo                         TeamId = 9 // Alfa Romeo
+	Mercedes2020                      TeamId = 85 // Mercedes 2020
+	Ferrari2020                       TeamId = 86 // Ferrari 2020
+	RedBull2020                       TeamId = 87 // Red Bull 2020
+	Williams2020                      TeamId = 88 // Williams 2020
+	RacingPoint2020                   TeamId = 89 // Racing Point 2020
+	Renault2020                       TeamId = 90 // Renault 2020
+	AlphaTauri2020                    TeamId = 91 // Alpha Tauri 2020
+	Haas2020                          TeamId = 92 // Haas 2020
+	McLaren2020                       TeamId = 93 // McLaren 2020
+	AlfaRomeo2020                     TeamId = 94 // Alfa Romeo 2020
+	AstonMartinDB11V12                TeamId = 95 // Aston Martin DB11 V12
+	AstonMartinVantageF1Edition       TeamId = 96 // Aston Martin Vantage F1 Edition
+	AstonMartinVantageSafetyCar       TeamId = 97 // Aston Martin Vantage Safety Car
+	FerrariF8Tributo                  TeamId = 98 // Ferrari F8 Tributo
+	FerrariRoma                       TeamId = 99 // Ferrari Roma
+	McLaren720S                       TeamId = 100 // McLaren 720S
+	McLarenArtura                     TeamId = 101 // McLaren Artura
+	MercedesAMGGTBlackSeriesSafetyCar TeamId = 102 // Mercedes AMG GT Black Series Safety Car
+	MercedesAMGGTRPro                 TeamId = 103 // Mercedes AMG GTR Pro
+	F1CustomTeam                      TeamId = 104 // F1 Custom Team
+	Prema_21                          TeamId = 106 // Prema '21
+	Uni_Virtuosi_21                   TeamId = 107 // Uni-Virtuosi '21
+	Carlin_21                         TeamId = 108 // Carlin '21
+	Hitech_21                         TeamId = 109 // Hitech '21
+	ArtGP_21                          TeamId = 110 // Art GP '21
+	MPMotorsport_21                   TeamId = 111 // MP Motorsport '21
+	Charouz_21                        TeamId = 112 // Charouz '21
+	Dams_21                           TeamId = 113 // Dams '21
+	Campos_21                         TeamId = 114 // Campos '21
+	BWT_21                            TeamId = 115 // BWT '21
+	Trident_21                        TeamId = 116 // Trident '21
+	MercedesAMGGTBlackSeries          TeamId = 117 // Mercedes AMG GT Black Series
+	Mercedes_22                       TeamId = 118 // Mercedes '22
+	Ferrari_22                        TeamId = 119 // Ferrari '22
+	RedBullRacing_22                  TeamId = 120 // Red Bull Racing '22
+	Williams_22                       TeamId = 121 // Williams '22
+	AstonMartin_22                    TeamId = 122 // Aston Martin '22
+	Alpine_22                         TeamId = 123 // Alpine '22
+	AlphaTauri_22                     TeamId = 124 // Alpha Tauri '22
+	Haas_22                           TeamId = 125 // Haas '22
+	McLaren_22                        TeamId = 126 // McLaren '22
+	AlfaRomeo_22                      TeamId = 127 // Alfa Romeo '22
+	Konnersport_22                    TeamId = 128 // Konnersport '22
+	Konnersport                       TeamId = 129 // Konnersport
+	Prema_22                          TeamId = 130 // Prema '22
+	Virtuosi_22                       TeamId = 131 // Virtuosi '22
+	Carlin_22                         TeamId = 132 // Carlin '22
+	MPMotorsport_22                   TeamId = 133 // MP Motorsport '22
+	Charouz_22                        TeamId = 134 // Charouz '22
+	Dams_22                           TeamId = 135 // Dams '22
+	Campos_22                         TeamId = 136 // Campos '22
+	VanAmersfoortRacing_22            TeamId = 137 // Van Amersfoort Racing '22
+	Trident_22                        TeamId = 138 // Trident '22
+	Hitech_22                         TeamId = 139 // Hitech '22
+	ArtGP_22                          TeamId = 140 // Art GP '22
+
+	Team_Max = ArtGP_22
 )
+
+func (t TeamId) Id() uint8 {
+	return uint8(t)
+}
 
 func (t TeamId) String() string {
 	switch t {
@@ -204,5 +228,5 @@ func (t TeamId) String() string {
 		return "Art GP '22"
 	}
 
-	return "UNKNOWN"
+	return constants.UNKNOWN
 }

@@ -3,28 +3,12 @@ package f1_2023
 import "github.com/DaanV2/go-f1-library/enums"
 
 const (
-	PacketSessionDataFrequency = 2
+	PacketSessionDataFrequency = 2 // Frequency: 2 per second
 	PacketSessionDataSize      = 644
 	PacketSessionDataVersion   = 1
 )
 
 type (
-	MarshalZone struct {
-		ZoneStart float32        // Fraction (0..1) of way through the lap the marshal zone starts
-		ZoneFlag  enums.ZoneFlag // int8,
-	}
-
-	WeatherForecastSample struct {
-		SessionType            enums.SessionType       // uint8 The type of session the forecast is for
-		TimeOffset             uint8                   // Time in minutes the forecast is for
-		WeatherType            enums.WeatherType       // uint8, Weather
-		TrackTemperature       int8                    // Track temp. in degrees Celsius
-		TrackTemperatureChange enums.TemperatureChange // int8, Track temp. change
-		AirTemperature         int8                    // Air temp. in degrees celsius
-		AirTemperatureChange   enums.TemperatureChange // int8, Air temp
-		RainPercentage         uint8                   // Rain percentage (0-100)
-	}
-
 	// The session packet includes details about the current session in progress.
 	PacketSessionData struct {
 		Header                          PacketHeader              // Header
@@ -57,13 +41,13 @@ type (
 		PitStopWindowIdealLap           uint8                     // Ideal lap to pit on for current strategy (player)
 		PitStopWindowLatestLap          uint8                     // Latest lap to pit on for current strategy (player)
 		PitStopRejoinPosition           uint8                     // Predicted position to rejoin at (player)
-		SteeringAssist                  enums.OnOff               // 0 = off, 1 = on
+		SteeringAssist                  uint8                     // 0 = off, 1 = on
 		BrakingAssist                   uint8                     // 0 = off, 1 = low, 2 = medium, 3 = high
 		GearboxAssist                   uint8                     // 1 = manual, 2 = manual & suggested gear, 3 = auto
-		PitAssist                       enums.OnOff               // 0 = off, 1 = on
-		PitReleaseAssist                enums.OnOff               // 0 = off, 1 = on
-		ERSAssist                       enums.OnOff               // 0 = off, 1 = on
-		DRSAssist                       enums.OnOff               // 0 = off, 1 = on
+		PitAssist                       uint8                     // 0 = off, 1 = on
+		PitReleaseAssist                uint8                     // 0 = off, 1 = on
+		ERSAssist                       uint8                     // 0 = off, 1 = on
+		DRSAssist                       uint8                     // 0 = off, 1 = on
 		DynamicRacingLine               uint8                     // 0 = off, 1 = corners only, 2 = full
 		DynamicRacingLineType           uint8                     // 0 = 2D, 1 = 3D
 		GameMode                        uint8                     // Game mode id - see appendix
@@ -77,5 +61,21 @@ type (
 		NumSafetyCarPeriods             uint8                     // Number of safety cars called during session
 		NumVirtualSafetyCarPeriods      uint8                     // Number of virtual safety cars called
 		NumRedFlagPeriods               uint8                     // Number of red flags called during session
+	}
+
+	MarshalZone struct {
+		ZoneStart float32        // Fraction (0..1) of way through the lap the marshal zone starts
+		ZoneFlag  enums.ZoneFlag // int8,
+	}
+
+	WeatherForecastSample struct {
+		SessionType            enums.SessionType       // uint8 The type of session the forecast is for
+		TimeOffset             uint8                   // Time in minutes the forecast is for
+		WeatherType            enums.WeatherType       // uint8, Weather
+		TrackTemperature       int8                    // Track temp. in degrees Celsius
+		TrackTemperatureChange enums.TemperatureChange // int8, Track temp. change
+		AirTemperature         int8                    // Air temp. in degrees celsius
+		AirTemperatureChange   enums.TemperatureChange // int8, Air temp
+		RainPercentage         uint8                   // Rain percentage (0-100)
 	}
 )

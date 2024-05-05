@@ -1,96 +1,120 @@
 package f1_2023
 
-type Nationality int8
+import (
+	"github.com/DaanV2/go-f1-library/constants"
+	"github.com/DaanV2/go-f1-library/game"
+)
+
+var _ game.Nationalities = &Nationalities{}
+
+type (
+	Nationality uint8
+	Nationalities struct{}
+)
+
+func (n *Nationalities) Get(id uint8) game.Nationality {
+	return Nationality(id)
+}
+
+func (n *Nationalities) Max() uint8 {
+	return Nationality_Max.Id()
+}
 
 const (
-	American      Nationality = 1
-	Argentinean   Nationality = 2
-	Australian    Nationality = 3
-	Austrian      Nationality = 4
-	Azerbaijani   Nationality = 5
-	Bahraini      Nationality = 6
-	Belgian       Nationality = 7
-	Bolivian      Nationality = 8
-	Brazilian     Nationality = 9
-	British       Nationality = 10
-	Bulgarian     Nationality = 11
-	Cameroonian   Nationality = 12
-	Canadian      Nationality = 13
-	Chilean       Nationality = 14
-	Chinese       Nationality = 15
-	Colombian     Nationality = 16
-	CostaRican    Nationality = 17
-	Croatian      Nationality = 18
-	Cypriot       Nationality = 19
-	Czech         Nationality = 20
-	Danish        Nationality = 21
-	Dutch         Nationality = 22
-	Ecuadorian    Nationality = 23
-	English       Nationality = 24
-	Emirian       Nationality = 25
-	Estonian      Nationality = 26
-	Finnish       Nationality = 27
-	French        Nationality = 28
-	German        Nationality = 29
-	Ghanaian      Nationality = 30
-	Greek         Nationality = 31
-	Guatemalan    Nationality = 32
-	Honduran      Nationality = 33
-	HongKonger    Nationality = 34
-	Hungarian     Nationality = 35
-	Icelander     Nationality = 36
-	Indian        Nationality = 37
-	Indonesian    Nationality = 38
-	Irish         Nationality = 39
-	Israeli       Nationality = 40
-	Italian       Nationality = 41
-	Jamaican      Nationality = 42
-	Japanese      Nationality = 43
-	Jordanian     Nationality = 44
-	Kuwaiti       Nationality = 45
-	Latvian       Nationality = 46
-	Lebanese      Nationality = 47
-	Lithuanian    Nationality = 48
-	Luxembourger  Nationality = 49
-	Malaysian     Nationality = 50
-	Maltese       Nationality = 51
-	Mexican       Nationality = 52
-	Monegasque    Nationality = 53
-	NewZealander  Nationality = 54
-	Nicaraguan    Nationality = 55
-	NorthernIrish Nationality = 56
-	Norwegian     Nationality = 57
-	Omani         Nationality = 58
-	Pakistani     Nationality = 59
-	Panamanian    Nationality = 60
-	Paraguayan    Nationality = 61
-	Peruvian      Nationality = 62
-	Polish        Nationality = 63
-	Portuguese    Nationality = 64
-	Qatari        Nationality = 65
-	Romanian      Nationality = 66
-	Russian       Nationality = 67
-	Salvadoran    Nationality = 68
-	Saudi         Nationality = 69
-	Scottish      Nationality = 70
-	Serbian       Nationality = 71
-	Singaporean   Nationality = 72
-	Slovakian     Nationality = 73
-	Slovenian     Nationality = 74
-	SouthKorean   Nationality = 75
-	SouthAfrican  Nationality = 76
-	Spanish       Nationality = 77
-	Swedish       Nationality = 78
-	Swiss         Nationality = 79
-	Thai          Nationality = 80
-	Turkish       Nationality = 81
-	Uruguayan     Nationality = 82
-	Ukrainian     Nationality = 83
-	Venezuelan    Nationality = 84
-	Barbadian     Nationality = 85
-	Welsh         Nationality = 86
-	Vietnamese    Nationality = 87
+	American      Nationality = 1 // American
+	Argentinean   Nationality = 2 // Argentinean
+	Australian    Nationality = 3 // Australian
+	Austrian      Nationality = 4 // Austrian
+	Azerbaijani   Nationality = 5 // Azerbaijani
+	Bahraini      Nationality = 6 // Bahraini
+	Belgian       Nationality = 7 // Belgian
+	Bolivian      Nationality = 8 // Bolivian
+	Brazilian     Nationality = 9 // Brazilian
+	British       Nationality = 10 // British
+	Bulgarian     Nationality = 11 // Bulgarian
+	Cameroonian   Nationality = 12 // Cameroonian
+	Canadian      Nationality = 13 // Canadian
+	Chilean       Nationality = 14 // Chilean
+	Chinese       Nationality = 15 // Chinese
+	Colombian     Nationality = 16 // Colombian
+	CostaRican    Nationality = 17 // CostaRican
+	Croatian      Nationality = 18 // Croatian
+	Cypriot       Nationality = 19 // Cypriot
+	Czech         Nationality = 20 // Czech
+	Danish        Nationality = 21 // Danish
+	Dutch         Nationality = 22 // Dutch
+	Ecuadorian    Nationality = 23 // Ecuadorian
+	English       Nationality = 24 // English
+	Emirian       Nationality = 25 // Emirian
+	Estonian      Nationality = 26 // Estonian
+	Finnish       Nationality = 27 // Finnish
+	French        Nationality = 28 // French
+	German        Nationality = 29 // German
+	Ghanaian      Nationality = 30 // Ghanaian
+	Greek         Nationality = 31 // Greek
+	Guatemalan    Nationality = 32 // Guatemalan
+	Honduran      Nationality = 33 // Honduran
+	HongKonger    Nationality = 34 // HongKonger
+	Hungarian     Nationality = 35 // Hungarian
+	Icelander     Nationality = 36 // Icelander
+	Indian        Nationality = 37 // Indian
+	Indonesian    Nationality = 38 // Indonesian
+	Irish         Nationality = 39 // Irish
+	Israeli       Nationality = 40 // Israeli
+	Italian       Nationality = 41 // Italian
+	Jamaican      Nationality = 42 // Jamaican
+	Japanese      Nationality = 43 // Japanese
+	Jordanian     Nationality = 44 // Jordanian
+	Kuwaiti       Nationality = 45 // Kuwaiti
+	Latvian       Nationality = 46 // Latvian
+	Lebanese      Nationality = 47 // Lebanese
+	Lithuanian    Nationality = 48 // Lithuanian
+	Luxembourger  Nationality = 49 // Luxembourger
+	Malaysian     Nationality = 50 // Malaysian
+	Maltese       Nationality = 51 // Maltese
+	Mexican       Nationality = 52 // Mexican
+	Monegasque    Nationality = 53 // Monegasque
+	NewZealander  Nationality = 54 // NewZealander
+	Nicaraguan    Nationality = 55 // Nicaraguan
+	NorthernIrish Nationality = 56 // NorthernIrish
+	Norwegian     Nationality = 57 // Norwegian
+	Omani         Nationality = 58 // Omani
+	Pakistani     Nationality = 59 // Pakistani
+	Panamanian    Nationality = 60 // Panamanian
+	Paraguayan    Nationality = 61 // Paraguayan
+	Peruvian      Nationality = 62 // Peruvian
+	Polish        Nationality = 63 // Polish
+	Portuguese    Nationality = 64 // Portuguese
+	Qatari        Nationality = 65 // Qatari
+	Romanian      Nationality = 66 // Romanian
+	Russian       Nationality = 67 // Russian
+	Salvadoran    Nationality = 68 // Salvadoran
+	Saudi         Nationality = 69 // Saudi
+	Scottish      Nationality = 70 // Scottish
+	Serbian       Nationality = 71 // Serbian
+	Singaporean   Nationality = 72 // Singaporean
+	Slovakian     Nationality = 73 // Slovakian
+	Slovenian     Nationality = 74 // Slovenian
+	SouthKorean   Nationality = 75 // SouthKorean
+	SouthAfrican  Nationality = 76 // SouthAfrican
+	Spanish       Nationality = 77 // Spanish
+	Swedish       Nationality = 78 // Swedish
+	Swiss         Nationality = 79 // Swiss
+	Thai          Nationality = 80 // Thai
+	Turkish       Nationality = 81 // Turkish
+	Uruguayan     Nationality = 82 // Uruguayan
+	Ukrainian     Nationality = 83 // Ukrainian
+	Venezuelan    Nationality = 84 // Venezuelan
+	Barbadian     Nationality = 85 // Barbadian
+	Welsh         Nationality = 86 // Welsh
+	Vietnamese    Nationality = 87 // Vietnamese
+
+	Nationality_Max = Vietnamese
 )
+
+func (n Nationality) Id() uint8 {
+	return uint8(n)
+}
 
 func (n Nationality) String() string {
 	switch n {
@@ -270,5 +294,5 @@ func (n Nationality) String() string {
 		return "Vietnamese"
 	}
 
-	return "UNKNOWN"
+	return constants.UNKNOWN
 }
