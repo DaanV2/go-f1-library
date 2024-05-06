@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"testing"
 
+	"github.com/DaanV2/go-f1-library/encoding"
 	"github.com/DaanV2/go-f1-library/enums"
 	f1_2023 "github.com/DaanV2/go-f1-library/packets/2023"
 	"github.com/stretchr/testify/require"
@@ -25,7 +26,9 @@ func Test_DeserializePacketHeader(t *testing.T) {
 	data[27] = 0 // Player car index
 	data[28] = 255 // Secondary player car index
 
-	packet := f1_2023.DeserializePacketHeader(data)
+	decoder := encoding.NewDecoder(data)
+	packet, err := f1_2023.ParsePacketHeader(decoder)
+	require.NoError(t, err)
 	
 	require.Equal(t, enums.F1_2023, packet.PacketFormat)
 	require.Equal(t, uint8(23), packet.GameYear)

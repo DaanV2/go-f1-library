@@ -1,6 +1,9 @@
 package f1_2023
 
-import "github.com/DaanV2/go-f1-library/enums"
+import (
+	"github.com/DaanV2/go-f1-library/encoding"
+	"github.com/DaanV2/go-f1-library/enums"
+)
 
 const (
 	PacketSessionDataFrequency = 2 // Frequency: 2 per second
@@ -12,14 +15,14 @@ type (
 	// The session packet includes details about the current session in progress.
 	PacketSessionData struct {
 		Header                          PacketHeader              // Header
-		Weather                         enums.WeatherType         // Weather
+		Weather                         enums.WeatherType         // uint8, Weather
 		TrackTemperature                int8                      // Track temp. in degrees celsius
 		AirTemperature                  int8                      // Air temp. in degrees celsius
 		TotalLaps                       uint8                     // Total number of laps in this race
 		TrackLength                     uint16                    // Track length in metres
-		SessionType                     enums.SessionType         //uint8,
+		SessionType                     enums.SessionType         // uint8,
 		TrackId                         int8                      // -1 for unknown, see appendix
-		Formula                         enums.Formula             //uint8,
+		Formula                         enums.Formula             // uint8,
 		SessionTimeLeft                 uint16                    // Time left in session in seconds
 		SessionDuration                 uint16                    // Session duration in seconds
 		PitSpeedLimit                   uint8                     // Pit speed limit in kilometres per hour
@@ -79,3 +82,105 @@ type (
 		RainPercentage         uint8                   // Rain percentage (0-100)
 	}
 )
+
+// ParsePacketSessionData will parse the given data into a packet
+func ParsePacketSessionData(decoder *encoding.Decoder) (PacketSessionData, error) {
+	header, err := ParsePacketHeader(decoder)
+	if err != nil {
+		return PacketSessionData{}, err
+	}
+
+	return ParsePacketSessionDataWithHeader(decoder, header)
+}
+
+// ParsePacketSessionDataWithHeader will parse the given data into a packet, expected the decoder is past the header
+func ParsePacketSessionDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketSessionData, error) {
+	if decoder.LeftToRead() < PacketSessionDataSize {
+		return PacketSessionData{}, encoding.ErrBufferNotLargeEnough
+	}
+
+	return PacketSessionData{
+		Header:                          header,
+		Weather:                         enums.WeatherType(decoder.Uint8()),
+		TrackTemperature:                decoder.Int8(),
+		AirTemperature:                  decoder.Int8(),
+		TotalLaps:                       decoder.Uint8(),
+		TrackLength:                     decoder.Uint16(),
+		SessionType:                     enums.SessionType(decoder.Uint8()),
+		TrackId:                         decoder.Int8(),
+		Formula:                         enums.Formula(decoder.Uint8()),
+		SessionTimeLeft:                 decoder.Uint16(),
+		SessionDuration:                 decoder.Uint16(),
+		PitSpeedLimit:                   decoder.Uint8(),
+		GamePaused:                      decoder.Uint8(),
+		IsSpectating:                    decoder.Uint8(),
+		SpectatorCarIndex:               decoder.Uint8(),
+		SliProNativeSupport:             decoder.Uint8(),
+		NumMarshalZones:                 decoder.Uint8(),
+		MarshalZones:                    parseMarshalZone(decoder),
+		SafetyCarStatus:                 decoder.Uint8(),
+		NetworkGame:                     decoder.Uint8(),
+		NumWeatherForecastSamples:       decoder.Uint8(),
+		WeatherForecastSamples:          parseWeatherForecastSample(decoder),
+		ForecastAccuracy:                decoder.Uint8(),
+		AiDifficulty:                    decoder.Uint8(),
+		SeasonLinkIdentifier:            decoder.Uint32(),
+		WeekendLinkIdentifier:           decoder.Uint32(),
+		SessionLinkIdentifier:           decoder.Uint32(),
+		PitStopWindowIdealLap:           decoder.Uint8(),
+		PitStopWindowLatestLap:          decoder.Uint8(),
+		PitStopRejoinPosition:           decoder.Uint8(),
+		SteeringAssist:                  decoder.Uint8(),
+		BrakingAssist:                   decoder.Uint8(),
+		GearboxAssist:                   decoder.Uint8(),
+		PitAssist:                       decoder.Uint8(),
+		PitReleaseAssist:                decoder.Uint8(),
+		ERSAssist:                       decoder.Uint8(),
+		DRSAssist:                       decoder.Uint8(),
+		DynamicRacingLine:               decoder.Uint8(),
+		DynamicRacingLineType:           decoder.Uint8(),
+		GameMode:                        decoder.Uint8(),
+		RuleSet:                         decoder.Uint8(),
+		TimeOfDay:                       decoder.Uint32(),
+		SessionLength:                   decoder.Uint8(),
+		SpeedUnitsLeadPlayer:            enums.SpeedFormat(decoder.Uint8()),
+		TemperatureUnitsLeadPlayer:      enums.TemperatureFormat(decoder.Uint8()),
+		SpeedUnitsSecondaryPlayer:       enums.SpeedFormat(decoder.Uint8()),
+		TemperatureUnitsSecondaryPlayer: enums.TemperatureFormat(decoder.Uint8()),
+		NumSafetyCarPeriods:             decoder.Uint8(),
+		NumVirtualSafetyCarPeriods:      decoder.Uint8(),
+		NumRedFlagPeriods:               decoder.Uint8(),
+	}, nil
+}
+
+func parseMarshalZone(decoder *encoding.Decoder) [21]MarshalZone {
+	items := [21]MarshalZone{}
+
+	for i := range items {
+		items[i] = MarshalZone{
+			ZoneStart: decoder.Float32(),
+			ZoneFlag:  enums.ZoneFlag(decoder.Int8()),
+		}
+	}
+
+	return items
+}
+
+func parseWeatherForecastSample(decoder *encoding.Decoder) [56]WeatherForecastSample {
+	items := [56]WeatherForecastSample{}
+
+	for i := range items {
+		items[i] = WeatherForecastSample{
+			SessionType:            enums.SessionType(decoder.Uint8()),
+			TimeOffset:             decoder.Uint8(),
+			WeatherType:            enums.WeatherType(decoder.Uint8()),
+			TrackTemperature:       decoder.Int8(),
+			TrackTemperatureChange: enums.TemperatureChange(decoder.Int8()),
+			AirTemperature:         decoder.Int8(),
+			AirTemperatureChange:   enums.TemperatureChange(decoder.Int8()),
+			RainPercentage:         decoder.Uint8(),
+		}
+	}
+
+	return items
+}

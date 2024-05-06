@@ -1,6 +1,9 @@
 package f1_2023
 
-import "github.com/DaanV2/go-f1-library/c"
+import (
+	"github.com/DaanV2/go-f1-library/c"
+	"github.com/DaanV2/go-f1-library/encoding"
+)
 
 const (
 	PacketParticipantsDataFrequency = 5 // Frequency: Every 5 seconds
@@ -35,4 +38,49 @@ type (
 
 func (p *ParticipantData) ParticipantName() string {
 	return c.String(p.Name[:])
+}
+
+// ParsePacketParticipantsData will parse the given data into a packet
+func ParsePacketParticipantsData(decoder *encoding.Decoder) (PacketParticipantsData, error) {
+	header, err := ParsePacketHeader(decoder)
+	if err != nil {
+		return PacketParticipantsData{}, err
+	}
+
+	return ParsePacketParticipantsDataWithHeader(decoder, header)
+}
+
+// ParsePacketParticipantsDataWithHeader will parse the given data into a packet, expected the decoder is past the header
+func ParsePacketParticipantsDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketParticipantsData, error) {
+	if decoder.LeftToRead() < PacketParticipantsDataSize {
+		return PacketParticipantsData{}, encoding.ErrBufferNotLargeEnough
+	}
+
+	return PacketParticipantsData{
+		Header:        header,
+		NumActiveCars: decoder.Uint8(),
+		Participants:  parseParticipantData(decoder),
+	}, nil
+}
+
+func parseParticipantData(decoder *encoding.Decoder) [22]ParticipantData {
+	items := [22]ParticipantData{}
+
+	for i := range items {
+		items[i] = ParticipantData{
+			AiControlled:    decoder.Uint8(),
+			DriverId:        Driver(decoder.Uint8()),
+			NetworkId:       decoder.Uint8(),
+			TeamId:          TeamId(decoder.Uint8()),
+			MyTeam:          decoder.Uint8(),
+			RaceNumber:      decoder.Uint8(),
+			Nationality:     Nationality(decoder.Uint8()),
+			Name:            decoder.Read48(),
+			YourTelemetry:   decoder.Uint8(),
+			ShowOnlineNames: decoder.Uint8(),
+			Platform:        Platform(decoder.Uint8()),
+		}
+	}
+
+	return items
 }

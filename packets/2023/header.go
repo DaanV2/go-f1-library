@@ -5,6 +5,10 @@ import (
 	"github.com/DaanV2/go-f1-library/enums"
 )
 
+const (
+	PacketHeaderSize = 29
+)
+
 type PacketHeader struct {
 	PacketFormat            enums.PacketFormat // uint16, 2023
 	GameYear                uint8              // Game year - last two digits e.g. 23
@@ -34,22 +38,24 @@ func (p *PacketHeader) HasSecondaryPlayer() bool {
 	return p.SecondaryPlayerCarIndex != 255
 }
 
-// DeserializePacketHeader will deserialise a byte slice into a PacketHeader, expects the slice to be 29 bytes long
-func DeserializePacketHeader(buf []byte) PacketHeader {
-	_ = buf[28] // Ensure buf is large enough
+// ParsePacketHeader will deserialise a byte slice into a PacketHeader, expects the slice to be 29 bytes long
+func ParsePacketHeader(decoder *encoding.Decoder) (PacketHeader, error) {
+	if decoder.LeftToRead() < PacketHeaderSize {
+		return PacketHeader{}, encoding.ErrBufferNotLargeEnough
+	}
 
 	return PacketHeader{
-		PacketFormat:            enums.PacketFormat(encoding.Uint16(buf[0:2])),
-		GameYear:                encoding.Uint8(buf[2]),
-		GameMajorVersion:        encoding.Uint8(buf[3]),
-		GameMinorVersion:        encoding.Uint8(buf[4]),
-		PacketVersion:           encoding.Uint8(buf[5]),
-		PacketId:                encoding.Uint8(buf[6]),
-		SessionUID:              encoding.Uint64(buf[7:15]),
-		SessionTime:             float32(encoding.Uint32(buf[15:19])),
-		FrameIdentifier:         encoding.Uint32(buf[19:23]),
-		OverallFrameIdentifier:  encoding.Uint32(buf[23:27]),
-		PlayerCarIndex:          buf[27],
-		SecondaryPlayerCarIndex: buf[28],
-	}
+		PacketFormat:            enums.PacketFormat(decoder.Uint16()),
+		GameYear:                decoder.Uint8(),
+		GameMajorVersion:        decoder.Uint8(),
+		GameMinorVersion:        decoder.Uint8(),
+		PacketVersion:           decoder.Uint8(),
+		PacketId:                decoder.Uint8(),
+		SessionUID:              decoder.Uint64(),
+		SessionTime:             float32(decoder.Uint32()),
+		FrameIdentifier:         decoder.Uint32(),
+		OverallFrameIdentifier:  decoder.Uint32(),
+		PlayerCarIndex:          decoder.Uint8(),
+		SecondaryPlayerCarIndex: decoder.Uint8(),
+	}, nil
 }

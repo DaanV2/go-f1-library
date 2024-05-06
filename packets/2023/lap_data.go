@@ -1,5 +1,7 @@
 package f1_2023
 
+import "github.com/DaanV2/go-f1-library/encoding"
+
 const (
 	PacketLapDataSize    = 1131
 	PacketLapDataVersion = 1
@@ -10,7 +12,7 @@ type (
 	PacketLapData struct {
 		Header               PacketHeader // Header
 		LapData              [22]LapData  // Lap data for all cars on track
-		TimeTrialPBCarIdx    uint         // Index of Personal Best car in time trial (255 if invalid)
+		TimeTrialPBCarIdx    uint8        // Index of Personal Best car in time trial (255 if invalid)
 		TimeTrialRivalCarIdx uint8        // Index of Rival car in time trial (255 if invalid)
 	}
 
@@ -46,3 +48,69 @@ type (
 		PitStopShouldServePen       uint8   // Whether the car should serve a penalty at this stop
 	}
 )
+
+// ParsePacketLapData will parse the given data into a packet
+func ParsePacketLapData(decoder *encoding.Decoder) (PacketLapData, error) {
+	header, err := ParsePacketHeader(decoder)
+	if err != nil {
+		return PacketLapData{}, err
+	}
+
+	return ParsePacketLapDataWithHeader(decoder, header)
+}
+
+// ParsePacketLapDataWithHeader will parse the given data into a packet, expected the decoder is past the header
+func ParsePacketLapDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketLapData, error) {
+	if decoder.LeftToRead() < PacketLapDataSize {
+		return PacketLapData{}, encoding.ErrBufferNotLargeEnough
+	}
+
+	packet := PacketLapData{
+		Header:               header,
+		LapData:              parseLapData(decoder),
+		TimeTrialPBCarIdx:    decoder.Uint8(),
+		TimeTrialRivalCarIdx: decoder.Uint8(),
+	}
+
+	return packet, nil
+}
+
+func parseLapData(decoder *encoding.Decoder) [22]LapData {
+	items := [22]LapData{}
+
+	for i := range items {
+		items[i] = LapData{
+			LastLapTimeInMS:             decoder.Uint32(),
+			CurrentLapTimeInMS:          decoder.Uint32(),
+			Sector1TimeInMS:             decoder.Uint16(),
+			Sector1TimeMinutes:          decoder.Uint8(),
+			Sector2TimeInMS:             decoder.Uint16(),
+			Sector2TimeMinutes:          decoder.Uint8(),
+			DeltaToCarInFrontInMS:       decoder.Uint16(),
+			DeltaToRaceLeaderInMS:       decoder.Uint16(),
+			LapDistance:                 decoder.Float32(),
+			TotalDistance:               decoder.Float32(),
+			SafetyCarDelta:              decoder.Float32(),
+			CarPosition:                 decoder.Uint8(),
+			CurrentLapNum:               decoder.Uint8(),
+			PitStatus:                   decoder.Uint8(),
+			NumPitStops:                 decoder.Uint8(),
+			Sector:                      decoder.Uint8(),
+			CurrentLapInvalid:           decoder.Uint8(),
+			Penalties:                   decoder.Uint8(),
+			TotalWarnings:               decoder.Uint8(),
+			CornerCuttingWarnings:       decoder.Uint8(),
+			NumUnservedDriveThroughPens: decoder.Uint8(),
+			NumUnservedStopGoPens:       decoder.Uint8(),
+			GridPosition:                decoder.Uint8(),
+			DriverStatus:                decoder.Uint8(),
+			ResultStatus:                decoder.Uint8(),
+			PitLaneTimerActive:          decoder.Uint8(),
+			PitLaneTimeInLaneInMS:       decoder.Uint16(),
+			PitStopTimerInMS:            decoder.Uint16(),
+			PitStopShouldServePen:       decoder.Uint8(),
+		}
+	}
+
+	return items
+}

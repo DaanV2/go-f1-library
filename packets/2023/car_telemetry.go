@@ -1,5 +1,7 @@
 package f1_2023
 
+import "github.com/DaanV2/go-f1-library/encoding"
+
 const (
 	PacketCarTelemetryDataSize    = 1352
 	PacketCarTelemetryDataVersion = 1
@@ -38,3 +40,57 @@ type (
 		SurfaceType             [4]uint8   // Driving surface, see appendices
 	}
 )
+
+// ParsePacketCarTelemetryData will parse the given data into a packet
+func ParsePacketCarTelemetryData(decoder *encoding.Decoder) (PacketCarTelemetryData, error) {
+	header, err := ParsePacketHeader(decoder)
+	if err != nil {
+		return PacketCarTelemetryData{}, err
+	}
+
+	return ParsePacketCarTelemetryDataWithHeader(decoder, header)
+}
+
+// ParsePacketCarTelemetryDataWithHeader will parse the given data into a packet, expected the decoder is past the header
+func ParsePacketCarTelemetryDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketCarTelemetryData, error) {
+	if decoder.LeftToRead() < PacketCarTelemetryDataSize {
+		return PacketCarTelemetryData{}, encoding.ErrBufferNotLargeEnough
+	}
+
+	packet := PacketCarTelemetryData{
+		Header:                       header,
+		CarTelemetryData:             parseCarTelemetryData(decoder),
+		MfdPanelIndex:                decoder.Uint8(),
+		MfdPanelIndexSecondaryPlayer: decoder.Uint8(),
+		SuggestedGear:                decoder.Int8(),
+	}
+
+	return packet, nil
+}
+
+func parseCarTelemetryData(decoder *encoding.Decoder) [22]CarTelemetryData {
+	items := [22]CarTelemetryData{}
+
+	for i := range items {
+		items[i] = CarTelemetryData{
+			Speed:                   decoder.Uint16(),
+			Throttle:                decoder.Float32(),
+			Steer:                   decoder.Float32(),
+			Brake:                   decoder.Float32(),
+			Clutch:                  decoder.Uint8(),
+			Gear:                    decoder.Int8(),
+			EngineRPM:               decoder.Uint16(),
+			Drs:                     decoder.Uint8(),
+			RevLightsPercent:        decoder.Uint8(),
+			RevLightsBitValue:       decoder.Uint16(),
+			BrakesTemperature:       encoding.Read4Times(decoder.Uint16),
+			TyresSurfaceTemperature: encoding.Read4Times(decoder.Uint8),
+			TyresInnerTemperature:   encoding.Read4Times(decoder.Uint8),
+			EngineTemperature:       decoder.Uint16(),
+			TyresPressure:           encoding.Read4Times(decoder.Float32),
+			SurfaceType:             encoding.Read4Times(decoder.Uint8),
+		}
+	}
+
+	return items
+}

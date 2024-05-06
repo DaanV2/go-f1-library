@@ -1,5 +1,9 @@
 package f1_2023
 
+import (
+	"github.com/DaanV2/go-f1-library/encoding"
+)
+
 const (
 	PacketCarDamageDataFrequency = 10
 	PacketCarDamageDataSize      = 953
@@ -38,3 +42,57 @@ type (
 		EngineSeized         uint8      // Engine seized, 0 = OK, 1 = fault
 	}
 )
+
+// ParsePacketCarDamageData will parse the given data into a packet
+func ParsePacketCarDamageData(decoder *encoding.Decoder) (PacketCarDamageData, error) {
+	header, err := ParsePacketHeader(decoder)
+	if err != nil {
+		return PacketCarDamageData{}, err
+	}
+
+	return ParsePacketCarDamageDataWithHeader(decoder, header)
+}
+
+// ParsePacketCarDamageDataWithHeader will parse the given data into a packet, expected the decoder is past the header
+func ParsePacketCarDamageDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketCarDamageData, error) {
+	if decoder.LeftToRead() < PacketCarDamageDataSize {
+		return PacketCarDamageData{}, encoding.ErrBufferNotLargeEnough
+	}
+
+	return PacketCarDamageData{
+		Header: header,
+		CarDamageData: parseCarDamageData(decoder),
+	}, nil
+}
+
+func parseCarDamageData(decoder *encoding.Decoder) [22]CarDamageData {
+	items := [22]CarDamageData{}
+
+	for i := range items {
+		items[i] = CarDamageData{
+			TyresWear:            encoding.Read4Times(decoder.Float32),
+			TyresDamage:          encoding.Read4Times(decoder.Uint8),
+			BrakesDamage:         encoding.Read4Times(decoder.Uint8),
+			FrontLeftWingDamage:  decoder.Uint8(),
+			FrontRightWingDamage: decoder.Uint8(),
+			RearWingDamage:       decoder.Uint8(),
+			FloorDamage:          decoder.Uint8(),
+			DiffuserDamage:       decoder.Uint8(),
+			SidepodDamage:        decoder.Uint8(),
+			DrsFault:             decoder.Uint8(),
+			ErsFault:             decoder.Uint8(),
+			GearBoxDamage:        decoder.Uint8(),
+			EngineDamage:         decoder.Uint8(),
+			EngineMGUHWear:       decoder.Uint8(),
+			EngineESWear:         decoder.Uint8(),
+			EngineCEWear:         decoder.Uint8(),
+			EngineICEWear:        decoder.Uint8(),
+			EngineMGUKWear:       decoder.Uint8(),
+			EngineTCWear:         decoder.Uint8(),
+			EngineBlown:          decoder.Uint8(),
+			EngineSeized:         decoder.Uint8(),
+		}
+	}
+
+	return items
+}

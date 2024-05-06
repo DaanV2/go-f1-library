@@ -8,8 +8,8 @@ import (
 var _ game.Teams = &Teams{}
 
 type (
-	TeamId uint16
-	Teams struct{}
+	TeamId uint8
+	Teams  struct{}
 )
 
 func (d *Teams) Get(id uint8) game.Team {
@@ -21,31 +21,31 @@ func (d *Teams) Max() uint8 {
 }
 
 const (
-	Mercedes                          TeamId = 0 // Mercedes
-	Ferrari                           TeamId = 1 // Ferrari
-	RedBullRacing                     TeamId = 2 // Red Bull Racing
-	Williams                          TeamId = 3 // Williams
-	AstonMartin                       TeamId = 4 // Aston Martin
-	Alpine                            TeamId = 5 // Alpine
-	AlphaTauri                        TeamId = 6 // Alpha Tauri
-	Haas                              TeamId = 7 // Haas
-	McLaren                           TeamId = 8 // McLaren
-	AlfaRomeo                         TeamId = 9 // Alfa Romeo
-	Mercedes2020                      TeamId = 85 // Mercedes 2020
-	Ferrari2020                       TeamId = 86 // Ferrari 2020
-	RedBull2020                       TeamId = 87 // Red Bull 2020
-	Williams2020                      TeamId = 88 // Williams 2020
-	RacingPoint2020                   TeamId = 89 // Racing Point 2020
-	Renault2020                       TeamId = 90 // Renault 2020
-	AlphaTauri2020                    TeamId = 91 // Alpha Tauri 2020
-	Haas2020                          TeamId = 92 // Haas 2020
-	McLaren2020                       TeamId = 93 // McLaren 2020
-	AlfaRomeo2020                     TeamId = 94 // Alfa Romeo 2020
-	AstonMartinDB11V12                TeamId = 95 // Aston Martin DB11 V12
-	AstonMartinVantageF1Edition       TeamId = 96 // Aston Martin Vantage F1 Edition
-	AstonMartinVantageSafetyCar       TeamId = 97 // Aston Martin Vantage Safety Car
-	FerrariF8Tributo                  TeamId = 98 // Ferrari F8 Tributo
-	FerrariRoma                       TeamId = 99 // Ferrari Roma
+	Mercedes                          TeamId = 0   // Mercedes
+	Ferrari                           TeamId = 1   // Ferrari
+	RedBullRacing                     TeamId = 2   // Red Bull Racing
+	Williams                          TeamId = 3   // Williams
+	AstonMartin                       TeamId = 4   // Aston Martin
+	Alpine                            TeamId = 5   // Alpine
+	AlphaTauri                        TeamId = 6   // Alpha Tauri
+	Haas                              TeamId = 7   // Haas
+	McLaren                           TeamId = 8   // McLaren
+	AlfaRomeo                         TeamId = 9   // Alfa Romeo
+	Mercedes2020                      TeamId = 85  // Mercedes 2020
+	Ferrari2020                       TeamId = 86  // Ferrari 2020
+	RedBull2020                       TeamId = 87  // Red Bull 2020
+	Williams2020                      TeamId = 88  // Williams 2020
+	RacingPoint2020                   TeamId = 89  // Racing Point 2020
+	Renault2020                       TeamId = 90  // Renault 2020
+	AlphaTauri2020                    TeamId = 91  // Alpha Tauri 2020
+	Haas2020                          TeamId = 92  // Haas 2020
+	McLaren2020                       TeamId = 93  // McLaren 2020
+	AlfaRomeo2020                     TeamId = 94  // Alfa Romeo 2020
+	AstonMartinDB11V12                TeamId = 95  // Aston Martin DB11 V12
+	AstonMartinVantageF1Edition       TeamId = 96  // Aston Martin Vantage F1 Edition
+	AstonMartinVantageSafetyCar       TeamId = 97  // Aston Martin Vantage Safety Car
+	FerrariF8Tributo                  TeamId = 98  // Ferrari F8 Tributo
+	FerrariRoma                       TeamId = 99  // Ferrari Roma
 	McLaren720S                       TeamId = 100 // McLaren 720S
 	McLarenArtura                     TeamId = 101 // McLaren Artura
 	MercedesAMGGTBlackSeriesSafetyCar TeamId = 102 // Mercedes AMG GT Black Series Safety Car
@@ -86,6 +86,7 @@ const (
 	Trident_22                        TeamId = 138 // Trident '22
 	Hitech_22                         TeamId = 139 // Hitech '22
 	ArtGP_22                          TeamId = 140 // Art GP '22
+	Team_NONE                         TeamId = 255 // No team currently selected
 
 	Team_Max = ArtGP_22
 )

@@ -15,6 +15,10 @@ const (
 	Retired       ResultStatus = 7 // Retired
 )
 
+func (r ResultStatus) Id() uint8 {
+	return uint8(r)
+}
+
 func (r ResultStatus) String() string {
 	switch r {
 	case Invalid:
@@ -36,8 +40,4 @@ func (r ResultStatus) String() string {
 	}
 
 	return constants.UNKNOWN
-}
-
-func (r ResultStatus) Id() uint8 {
-	return uint8(r)
 }

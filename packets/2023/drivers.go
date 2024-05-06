@@ -160,6 +160,10 @@ const (
 	Driver_Max = NigelMansell
 )
 
+func (d Driver) Id() uint8 {
+	return uint8(d)
+}
+
 func (d Driver) String() string {
 	switch d {
 	case CarlosSainz:
@@ -429,8 +433,4 @@ func (d Driver) String() string {
 	}
 
 	return constants.UNKNOWN
-}
-
-func (d Driver) Id() uint8 {
-	return uint8(d)
 }

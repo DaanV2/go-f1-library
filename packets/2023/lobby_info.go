@@ -1,6 +1,9 @@
 package f1_2023
 
-import "github.com/DaanV2/go-f1-library/c"
+import (
+	"github.com/DaanV2/go-f1-library/c"
+	"github.com/DaanV2/go-f1-library/encoding"
+)
 
 const (
 	PacketLobbyInfoDataSize    = 1218
@@ -14,8 +17,8 @@ type (
 		Header PacketHeader // Header
 
 		// Packet specific data
-		NumPlayers   uint8 // Number of players in the lobby data
-		LobbyPlayers [22]LobbyInfoData
+		NumPlayers   uint8             // Number of players in the lobby data
+		LobbyPlayers [22]LobbyInfoData //
 	}
 
 	LobbyInfoData struct {
@@ -35,4 +38,47 @@ func (l *LobbyInfoData) PlayerName() string {
 
 func (l *LobbyInfoData) Ready() bool {
 	return l.ReadyStatus == 1
+}
+
+// ParsePacketLobbyInfoData will parse the given data into a packet
+func ParsePacketLobbyInfoData(decoder *encoding.Decoder) (PacketLobbyInfoData, error) {
+	header, err := ParsePacketHeader(decoder)
+	if err != nil {
+		return PacketLobbyInfoData{}, err
+	}
+
+	return ParsePacketLobbyInfoDataWithHeader(decoder, header)
+}
+
+// ParsePacketLobbyInfoDataWithHeader will parse the given data into a packet, expected the decoder is past the header
+func ParsePacketLobbyInfoDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketLobbyInfoData, error) {
+	if decoder.LeftToRead() < PacketLobbyInfoDataSize {
+		return PacketLobbyInfoData{}, encoding.ErrBufferNotLargeEnough
+	}
+
+	packet := PacketLobbyInfoData{
+		Header:       header,
+		NumPlayers:   decoder.Uint8(),
+		LobbyPlayers: parseLobbyInfoData(decoder),
+	}
+
+	return packet, nil
+}
+
+func parseLobbyInfoData(decoder *encoding.Decoder) [22]LobbyInfoData {
+	items := [22]LobbyInfoData{}
+
+	for i := range items {
+		items[i] = LobbyInfoData{
+			AiControlled: decoder.Uint8(),
+			TeamId:       TeamId(decoder.Uint8()),
+			Nationality:  Nationality(decoder.Uint8()),
+			Platform:     Platform(decoder.Uint8()),
+			Name:         decoder.Read48(),
+			CarNumber:    decoder.Uint8(),
+			ReadyStatus:  decoder.Uint8(),
+		}
+	}
+
+	return items
 }

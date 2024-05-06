@@ -1,5 +1,7 @@
 package f1_2023
 
+import "github.com/DaanV2/go-f1-library/encoding"
+
 const (
 	PacketMotionExDataSize    = 217
 	PacketMotionExDataVersion = 1
@@ -30,4 +32,47 @@ type PacketMotionExData struct {
 	AngularAccelerationZ   float32    // Angular acceleration z-component
 	FrontWheelsAngle       float32    // Current front wheels angle in radians
 	WheelVertForce         [4]float32 // Vertical forces for each wheel
+}
+
+// ParsePacketMotionExData will parse the given data into a packet
+func ParsePacketMotionExData(decoder *encoding.Decoder) (PacketMotionExData, error) {
+	header, err := ParsePacketHeader(decoder)
+	if err != nil {
+		return PacketMotionExData{}, err
+	}
+
+	return ParsePacketMotionExDataWithHeader(decoder, header)
+}
+
+// ParsePacketMotionExDataWithHeader will parse the given data into a packet, expected the decoder is past the header
+func ParsePacketMotionExDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketMotionExData, error) {
+	if decoder.LeftToRead() < PacketMotionExDataSize {
+		return PacketMotionExData{}, encoding.ErrBufferNotLargeEnough
+	}
+
+	packet := PacketMotionExData{
+		Header:                 header,
+		SuspensionPosition:     encoding.Read4Times(decoder.Float32),
+		SuspensionVelocity:     encoding.Read4Times(decoder.Float32),
+		SuspensionAcceleration: encoding.Read4Times(decoder.Float32),
+		WheelSpeed:             encoding.Read4Times(decoder.Float32),
+		WheelSlipRatio:         encoding.Read4Times(decoder.Float32),
+		WheelSlipAngle:         encoding.Read4Times(decoder.Float32),
+		WheelLatForce:          encoding.Read4Times(decoder.Float32),
+		WheelLongForce:         encoding.Read4Times(decoder.Float32),
+		HeightOfCOGAboveGround: decoder.Float32(),
+		LocalVelocityX:         decoder.Float32(),
+		LocalVelocityY:         decoder.Float32(),
+		LocalVelocityZ:         decoder.Float32(),
+		AngularVelocityX:       decoder.Float32(),
+		AngularVelocityY:       decoder.Float32(),
+		AngularVelocityZ:       decoder.Float32(),
+		AngularAccelerationX:   decoder.Float32(),
+		AngularAccelerationY:   decoder.Float32(),
+		AngularAccelerationZ:   decoder.Float32(),
+		FrontWheelsAngle:       decoder.Float32(),
+		WheelVertForce:         encoding.Read4Times(decoder.Float32),
+	}
+
+	return packet, nil
 }

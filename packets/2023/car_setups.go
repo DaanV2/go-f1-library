@@ -1,5 +1,7 @@
 package f1_2023
 
+import "github.com/DaanV2/go-f1-library/encoding"
+
 const (
 	PacketCarSetupDataFrequency = 2
 	PacketCarSetupDataSize      = 1107
@@ -41,3 +43,58 @@ type (
 		FuelLoad               float32 // Fuel load
 	}
 )
+
+// ParsePacketCarSetupData will parse the given data into a packet
+func ParsePacketCarSetupData(decoder *encoding.Decoder) (PacketCarSetupData, error) {
+	header, err := ParsePacketHeader(decoder)
+	if err != nil {
+		return PacketCarSetupData{}, err
+	}
+
+	return ParsePacketCarSetupDataWithHeader(decoder, header)
+}
+
+// ParsePacketCarSetupDataWithHeader will parse the given data into a packet, expected the decoder is past the header
+func ParsePacketCarSetupDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketCarSetupData, error) {
+	if decoder.LeftToRead() < PacketCarSetupDataSize {
+		return PacketCarSetupData{}, encoding.ErrBufferNotLargeEnough
+	}
+
+	return PacketCarSetupData{
+		Header:    header,
+		CarSetups: parseCarSetupData(decoder),
+	}, nil
+}
+
+func parseCarSetupData(decoder *encoding.Decoder) [22]CarSetupData {
+	items := [22]CarSetupData{}
+
+	for i := range items {
+		items[i] = CarSetupData{
+			FrontWing:              decoder.Uint8(),
+			RearWing:               decoder.Uint8(),
+			OnThrottle:             decoder.Uint8(),
+			OffThrottle:            decoder.Uint8(),
+			FrontCamber:            decoder.Float32(),
+			RearCamber:             decoder.Float32(),
+			FrontToe:               decoder.Float32(),
+			RearToe:                decoder.Float32(),
+			FrontSuspension:        decoder.Uint8(),
+			RearSuspension:         decoder.Uint8(),
+			FrontAntiRollBar:       decoder.Uint8(),
+			RearAntiRollBar:        decoder.Uint8(),
+			FrontSuspensionHeight:  decoder.Uint8(),
+			RearSuspensionHeight:   decoder.Uint8(),
+			BrakePressure:          decoder.Uint8(),
+			BrakeBias:              decoder.Uint8(),
+			RearLeftTyrePressure:   decoder.Float32(),
+			RearRightTyrePressure:  decoder.Float32(),
+			FrontLeftTyrePressure:  decoder.Float32(),
+			FrontRightTyrePressure: decoder.Float32(),
+			Ballast:                decoder.Uint8(),
+			FuelLoad:               decoder.Float32(),
+		}
+	}
+
+	return items
+}
