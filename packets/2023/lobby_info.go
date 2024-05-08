@@ -14,21 +14,19 @@ type (
 	// This packet details the players currently in a multiplayer lobby.
 	// It details each player's selected car, any AI involved in the game and also the ready status of each of the participants.
 	PacketLobbyInfoData struct {
-		Header PacketHeader // Header
-
-		// Packet specific data
-		NumPlayers   uint8             // Number of players in the lobby data
-		LobbyPlayers [22]LobbyInfoData //
+		Header       PacketHeader      `json:"header"`        // Header
+		NumPlayers   uint8             `json:"num_players"`   // Number of players in the lobby data
+		LobbyPlayers [22]LobbyInfoData `json:"lobby_players"` //
 	}
 
 	LobbyInfoData struct {
-		AiControlled uint8       // Whether the vehicle is AI (1) or Human (0) controlled
-		TeamId       TeamId      // Team id - see appendix (255 if no team currently selected)
-		Nationality  Nationality // Nationality of the driver
-		Platform     Platform    // 1 = Steam, 3 = PlayStation, 4 = Xbox, 6 = Origin, 255 = unknown
-		Name         [48]uint8   // Name of participant in UTF-8 format – null terminated,  Will be truncated with ... (U+2026) if too long
-		CarNumber    uint8       // Car number of the player
-		ReadyStatus  uint8       // 0 = not ready, 1 = ready, 2 = spectating
+		AiControlled uint8       `json:"ai_controlled"` // Whether the vehicle is AI (1) or Human (0) controlled
+		TeamId       TeamId      `json:"team_id"`       // Team id - see appendix (255 if no team currently selected)
+		Nationality  Nationality `json:"nationality"`   // Nationality of the driver
+		Platform     Platform    `json:"platform"`      // 1 = Steam, 3 = PlayStation, 4 = Xbox, 6 = Origin, 255 = unknown
+		Name         [48]uint8   `json:"name"`          // Name of participant in UTF-8 format – null terminated,  Will be truncated with ... (U+2026) if too long
+		CarNumber    uint8       `json:"car_number"`    // Car number of the player
+		ReadyStatus  uint8       `json:"ready_status"`  // 0 = not ready, 1 = ready, 2 = spectating
 	}
 )
 

@@ -18,34 +18,33 @@ type (
 	// Note that at the end of the race, after the final classification packet has been sent,
 	// a final bulk update of all the session histories for the vehicles in that session will be sent.
 	PacketSessionHistoryData struct {
-		Header PacketHeader // Header
-
-		CarIdx                uint8                   // Index of the car this lap data relates to
-		NumLaps               uint8                   // Num laps in the data (including current partial lap)
-		NumTyreStints         uint8                   // Number of tyre stints in the data
-		BestLapTimeLapNum     uint8                   // Lap the best lap time was achieved on
-		BestSector1LapNum     uint8                   // Lap the best Sector 1 time was achieved on
-		BestSector2LapNum     uint8                   // Lap the best Sector 2 time was achieved on
-		BestSector3LapNum     uint8                   // Lap the best Sector 3 time was achieved on
-		LapHistoryData        [100]LapHistoryData     // 100 laps of data max
-		TyreStintsHistoryData [8]TyreStintHistoryData // 8 stints of data max
+		Header                PacketHeader            `json:"header"`                  // Header
+		CarIdx                uint8                   `json:"car_idx"`                 // Index of the car this lap data relates to
+		NumLaps               uint8                   `json:"num_laps"`                // Num laps in the data (including current partial lap)
+		NumTyreStints         uint8                   `json:"num_tyre_stints"`         // Number of tyre stints in the data
+		BestLapTimeLapNum     uint8                   `json:"best_lap_time_lap_num"`   // Lap the best lap time was achieved on
+		BestSector1LapNum     uint8                   `json:"best_sector1_lap_num"`    // Lap the best Sector 1 time was achieved on
+		BestSector2LapNum     uint8                   `json:"best_sector2_lap_num"`    // Lap the best Sector 2 time was achieved on
+		BestSector3LapNum     uint8                   `json:"best_sector3_lap_num"`    // Lap the best Sector 3 time was achieved on
+		LapHistoryData        [100]LapHistoryData     `json:"lap_history_data"`        // 100 laps of data max
+		TyreStintsHistoryData [8]TyreStintHistoryData `json:"tyre_stints_history_data"` // 8 stints of data max
 	}
 
 	LapHistoryData struct {
-		LapTimeInMS        uint32 // Lap time in milliseconds
-		Sector1TimeInMS    uint16 // Sector 1 time in milliseconds
-		Sector1TimeMinutes uint8  // Sector 1 whole minute part
-		Sector2TimeInMS    uint16 // Sector 2 time in milliseconds
-		Sector2TimeMinutes uint8  // Sector 2 whole minute part
-		Sector3TimeInMS    uint16 // Sector 3 time in milliseconds
-		Sector3TimeMinutes uint8  // Sector 3 whole minute part
-		LapValidBitFlags   uint8  // 0x01 bit set-lap valid, 0x02 bit set-sector 1 valid, 0x04 bit set-sector 2 valid, 0x08 bit set-sector 3 valid
+		LapTimeInMS        uint32 `json:"lap_time_in_ms"`        // Lap time in milliseconds
+		Sector1TimeInMS    uint16 `json:"sector1_time_in_ms"`    // Sector 1 time in milliseconds
+		Sector1TimeMinutes uint8  `json:"sector1_time_minutes"`  // Sector 1 whole minute part
+		Sector2TimeInMS    uint16 `json:"sector2_time_in_ms"`    // Sector 2 time in milliseconds
+		Sector2TimeMinutes uint8  `json:"sector2_time_minutes"`  // Sector 2 whole minute part
+		Sector3TimeInMS    uint16 `json:"sector3_time_in_ms"`    // Sector 3 time in milliseconds
+		Sector3TimeMinutes uint8  `json:"sector3_time_minutes"`  // Sector 3 whole minute part
+		LapValidBitFlags   uint8  `json:"lap_valid_bit_flags"`   // 0x01 bit set-lap valid, 0x02 bit set-sector 1 valid, 0x04 bit set-sector 2 valid, 0x08 bit set-sector 3 valid
 	}
 
 	TyreStintHistoryData struct {
-		EndLap             uint8 // Lap the tyre usage ends on (255 of current tyre)
-		TyreActualCompound uint8 // Actual tyres used by this driver
-		TyreVisualCompound uint8 // Visual tyres used by this driver
+		EndLap             uint8 `json:"end_lap"`              // Lap the tyre usage ends on (255 of current tyre)
+		TyreActualCompound uint8 `json:"tyre_actual_compound"` // Actual tyres used by this driver
+		TyreVisualCompound uint8 `json:"tyre_visual_compound"` // Visual tyres used by this driver
 	}
 )
 

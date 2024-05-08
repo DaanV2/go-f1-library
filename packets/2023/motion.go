@@ -9,29 +9,29 @@ const (
 
 type (
 	PacketMotionData struct {
-		Header        PacketHeader      // Header
-		CarMotionData [22]CarMotionData // Data for all cars on track
+		Header        PacketHeader      `json:"header"`          // Header
+		CarMotionData [22]CarMotionData `json:"car_motion_data"` // Data for all cars on track
 	}
 
 	CarMotionData struct {
-		WorldPositionX     float32 // World space X position - metres
-		WorldPositionY     float32 // World space Y position
-		WorldPositionZ     float32 // World space Z position
-		WorldVelocityX     float32 // Velocity in world space X – metres/s
-		WorldVelocityY     float32 // Velocity in world space Y
-		WorldVelocityZ     float32 // Velocity in world space Z
-		WorldForwardDirX   int16   // World space forward X direction (normalised)
-		WorldForwardDirY   int16   // World space forward Y direction (normalised)
-		WorldForwardDirZ   int16   // World space forward Z direction (normalised)
-		WorldRightDirX     int16   // World space right X direction (normalised)
-		WorldRightDirY     int16   // World space right Y direction (normalised)
-		WorldRightDirZ     int16   // World space right Z direction (normalised)
-		GForceLateral      float32 // Lateral G-Force component
-		GForceLongitudinal float32 // Longitudinal G-Force component
-		GForceVertical     float32 // Vertical G-Force component
-		Yaw                float32 // Yaw angle in radians
-		Pitch              float32 // Pitch angle in radians
-		Roll               float32 // Roll angle in radians
+		WorldPositionX     float32 `json:"world_position_x"`     // World space X position - metres
+		WorldPositionY     float32 `json:"world_position_y"`     // World space Y position
+		WorldPositionZ     float32 `json:"world_position_z"`     // World space Z position
+		WorldVelocityX     float32 `json:"world_velocity_x"`     // Velocity in world space X – metres/s
+		WorldVelocityY     float32 `json:"world_velocity_y"`     // Velocity in world space Y
+		WorldVelocityZ     float32 `json:"world_velocity_z"`     // Velocity in world space Z
+		WorldForwardDirX   int16   `json:"world_forward_dir_x"`  // World space forward X direction (normalised)
+		WorldForwardDirY   int16   `json:"world_forward_dir_y"`  // World space forward Y direction (normalised)
+		WorldForwardDirZ   int16   `json:"world_forward_dir_z"`  // World space forward Z direction (normalised)
+		WorldRightDirX     int16   `json:"world_right_dir_x"`    // World space right X direction (normalised)
+		WorldRightDirY     int16   `json:"world_right_dir_y"`    // World space right Y direction (normalised)
+		WorldRightDirZ     int16   `json:"world_right_dir_z"`    // World space right Z direction (normalised)
+		GForceLateral      float32 `json:"g_force_lateral"`      // Lateral G-Force component
+		GForceLongitudinal float32 `json:"g_force_longitudinal"` // Longitudinal G-Force component
+		GForceVertical     float32 `json:"g_force_vertical"`     // Vertical G-Force component
+		Yaw                float32 `json:"yaw"`                  // Yaw angle in radians
+		Pitch              float32 `json:"pitch"`                // Pitch angle in radians
+		Roll               float32 `json:"roll"`                 // Roll angle in radians
 	}
 )
 

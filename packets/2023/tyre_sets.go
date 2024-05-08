@@ -13,22 +13,22 @@ type (
 	//
 	// Frequency: 20 per second but cycling through cars
 	PacketTyreSetsData struct {
-		Header      PacketHeader    // Header
-		CarIdx      uint8           // Index of the car this data relates to
-		TyreSetData [20]TyreSetData // 13 (dry) + 7 (wet)
-		FittedIdx   uint8           // Index into array of fitted tyre
+		Header      PacketHeader    `json:"header"`        // Header
+		CarIdx      uint8           `json:"car_idx"`       // Index of the car this data relates to
+		TyreSetData [20]TyreSetData `json:"tyre_set_data"` // 13 (dry) + 7 (wet)
+		FittedIdx   uint8           `json:"fitted_idx"`    // Index into array of fitted tyre
 	}
 
 	TyreSetData struct {
-		ActualTyreCompound uint8 // Actual tyre compound used
-		VisualTyreCompound uint8 // Visual tyre compound used
-		Wear               uint8 // Tyre wear (percentage)
-		Available          uint8 // Whether this set is currently available
-		RecommendedSession uint8 // Recommended session for tyre set
-		LifeSpan           uint8 // Laps left in this tyre set
-		UsableLife         uint8 // Max number of laps recommended for this compound
-		LapDeltaTime       int16 // Lap delta time in milliseconds compared to fitted set
-		Fitted             uint8 // Whether the set is fitted or not
+		ActualTyreCompound uint8 `json:"actual_tyre_compound"` // Actual tyre compound used
+		VisualTyreCompound uint8 `json:"visual_tyre_compound"` // Visual tyre compound used
+		Wear               uint8 `json:"wear"`                 // Tyre wear (percentage)
+		Available          uint8 `json:"available"`            // Whether this set is currently available
+		RecommendedSession uint8 `json:"recommended_session"`  // Recommended session for tyre set
+		LifeSpan           uint8 `json:"life_span"`            // Laps left in this tyre set
+		UsableLife         uint8 `json:"usable_life"`          // Max number of laps recommended for this compound
+		LapDeltaTime       int16 `json:"lap_delta_time"`       // Lap delta time in milliseconds compared to fitted set
+		Fitted             uint8 `json:"fitted"`               // Whether the set is fitted or not
 	}
 )
 

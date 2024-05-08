@@ -13,33 +13,32 @@ const (
 type (
 	// This packet details car damage parameters for all the cars in the race.
 	PacketCarDamageData struct {
-		Header PacketHeader // Header
-
-		CarDamageData [22]CarDamageData
+		Header        PacketHeader      `json:"header"` // Header
+		CarDamageData [22]CarDamageData `json:"car_damage_data"`
 	}
 
 	CarDamageData struct {
-		TyresWear            [4]float32 // Tyre wear (percentage)
-		TyresDamage          [4]uint8   // Tyre damage (percentage)
-		BrakesDamage         [4]uint8   // Brakes damage (percentage)
-		FrontLeftWingDamage  uint8      // Front left wing damage (percentage)
-		FrontRightWingDamage uint8      // Front right wing damage (percentage)
-		RearWingDamage       uint8      // Rear wing damage (percentage)
-		FloorDamage          uint8      // Floor damage (percentage)
-		DiffuserDamage       uint8      // Diffuser damage (percentage)
-		SidepodDamage        uint8      // Sidepod damage (percentage)
-		DrsFault             uint8      // Indicator for DRS fault, 0 = OK, 1 = fault
-		ErsFault             uint8      // Indicator for ERS fault, 0 = OK, 1 = fault
-		GearBoxDamage        uint8      // Gear box damage (percentage)
-		EngineDamage         uint8      // Engine damage (percentage)
-		EngineMGUHWear       uint8      // Engine wear MGU-H (percentage)
-		EngineESWear         uint8      // Engine wear ES (percentage)
-		EngineCEWear         uint8      // Engine wear CE (percentage)
-		EngineICEWear        uint8      // Engine wear ICE (percentage)
-		EngineMGUKWear       uint8      // Engine wear MGU-K (percentage)
-		EngineTCWear         uint8      // Engine wear TC (percentage)
-		EngineBlown          uint8      // Engine blown, 0 = OK, 1 = fault
-		EngineSeized         uint8      // Engine seized, 0 = OK, 1 = fault
+		TyresWear            [4]float32 `json:"tyres_wear"`              // Tyre wear (percentage)
+		TyresDamage          [4]uint8   `json:"tyres_damage"`            // Tyre damage (percentage)
+		BrakesDamage         [4]uint8   `json:"brakes_damage"`           // Brakes damage (percentage)
+		FrontLeftWingDamage  uint8      `json:"front_left_wing_damage"`  // Front left wing damage (percentage)
+		FrontRightWingDamage uint8      `json:"front_right_wing_damage"` // Front right wing damage (percentage)
+		RearWingDamage       uint8      `json:"rear_wing_damage"`        // Rear wing damage (percentage)
+		FloorDamage          uint8      `json:"floor_damage"`            // Floor damage (percentage)
+		DiffuserDamage       uint8      `json:"diffuser_damage"`         // Diffuser damage (percentage)
+		SidepodDamage        uint8      `json:"sidepod_damage"`          // Sidepod damage (percentage)
+		DrsFault             uint8      `json:"drs_fault"`               // Indicator for DRS fault, 0 = OK, 1 = fault
+		ErsFault             uint8      `json:"ers_fault"`               // Indicator for ERS fault, 0 = OK, 1 = fault
+		GearBoxDamage        uint8      `json:"gear_box_damage"`         // Gear box damage (percentage)
+		EngineDamage         uint8      `json:"engine_damage"`           // Engine damage (percentage)
+		EngineMGUHWear       uint8      `json:"engine_mguh_wear"`        // Engine wear MGU-H (percentage)
+		EngineESWear         uint8      `json:"engine_es_wear"`          // Engine wear ES (percentage)
+		EngineCEWear         uint8      `json:"engine_ce_wear"`          // Engine wear CE (percentage)
+		EngineICEWear        uint8      `json:"engine_ice_wear"`         // Engine wear ICE (percentage)
+		EngineMGUKWear       uint8      `json:"engine_mguk_wear"`        // Engine wear MGU-K (percentage)
+		EngineTCWear         uint8      `json:"engine_tc_wear"`          // Engine wear TC (percentage)
+		EngineBlown          uint8      `json:"engine_blown"`            // Engine blown, 0 = OK, 1 = fault
+		EngineSeized         uint8      `json:"engine_seized"`           // Engine seized, 0 = OK, 1 = fault
 	}
 )
 
@@ -60,7 +59,7 @@ func ParsePacketCarDamageDataWithHeader(decoder *encoding.Decoder, header Packet
 	}
 
 	return PacketCarDamageData{
-		Header: header,
+		Header:        header,
 		CarDamageData: parseCarDamageData(decoder),
 	}, nil
 }

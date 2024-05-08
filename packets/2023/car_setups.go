@@ -13,34 +13,33 @@ type (
 	// other player cars will appear as blank, you will only be able to see your own car setup,
 	// regardless of the "Your Telemetry" setting. Spectators will also not be able to see any car setups.
 	PacketCarSetupData struct {
-		Header PacketHeader // Header
-
-		CarSetups [22]CarSetupData
+		Header    PacketHeader     `json:"header"` // Header
+		CarSetups [22]CarSetupData `json:"car_setups"`
 	}
 
 	CarSetupData struct {
-		FrontWing              uint8   // Front wing aero
-		RearWing               uint8   // Rear wing aero
-		OnThrottle             uint8   // Differential adjustment on throttle (percentage)
-		OffThrottle            uint8   // Differential adjustment off throttle (percentage)
-		FrontCamber            float32 // Front camber angle (suspension geometry)
-		RearCamber             float32 // Rear camber angle (suspension geometry)
-		FrontToe               float32 // Front toe angle (suspension geometry)
-		RearToe                float32 // Rear toe angle (suspension geometry)
-		FrontSuspension        uint8   // Front suspension
-		RearSuspension         uint8   // Rear suspension
-		FrontAntiRollBar       uint8   // Front anti-roll bar
-		RearAntiRollBar        uint8   // Front anti-roll bar
-		FrontSuspensionHeight  uint8   // Front ride height
-		RearSuspensionHeight   uint8   // Rear ride height
-		BrakePressure          uint8   // Brake pressure (percentage)
-		BrakeBias              uint8   // Brake bias (percentage)
-		RearLeftTyrePressure   float32 // Rear left tyre pressure (PSI)
-		RearRightTyrePressure  float32 // Rear right tyre pressure (PSI)
-		FrontLeftTyrePressure  float32 // Front left tyre pressure (PSI)
-		FrontRightTyrePressure float32 // Front right tyre pressure (PSI)
-		Ballast                uint8   // Ballast
-		FuelLoad               float32 // Fuel load
+		FrontWing              uint8   `json:"front_wing"`                // Front wing aero
+		RearWing               uint8   `json:"rear_wing"`                 // Rear wing aero
+		OnThrottle             uint8   `json:"on_throttle"`               // Differential adjustment on throttle (percentage)
+		OffThrottle            uint8   `json:"off_throttle"`              // Differential adjustment off throttle (percentage)
+		FrontCamber            float32 `json:"front_camber"`              // Front camber angle (suspension geometry)
+		RearCamber             float32 `json:"rear_camber"`               // Rear camber angle (suspension geometry)
+		FrontToe               float32 `json:"front_toe"`                 // Front toe angle (suspension geometry)
+		RearToe                float32 `json:"rear_toe"`                  // Rear toe angle (suspension geometry)
+		FrontSuspension        uint8   `json:"front_suspension"`          // Front suspension
+		RearSuspension         uint8   `json:"rear_suspension"`           // Rear suspension
+		FrontAntiRollBar       uint8   `json:"front_anti_roll_bar"`       // Front anti-roll bar
+		RearAntiRollBar        uint8   `json:"rear_anti_roll_bar"`        // Front anti-roll bar
+		FrontSuspensionHeight  uint8   `json:"front_suspension_height"`   // Front ride height
+		RearSuspensionHeight   uint8   `json:"rear_suspension_height"`    // Rear ride height
+		BrakePressure          uint8   `json:"brake_pressure"`            // Brake pressure (percentage)
+		BrakeBias              uint8   `json:"brake_bias"`                // Brake bias (percentage)
+		RearLeftTyrePressure   float32 `json:"rear_left_tyre_pressure"`   // Rear left tyre pressure (PSI)
+		RearRightTyrePressure  float32 `json:"rear_right_tyre_pressure"`  // Rear right tyre pressure (PSI)
+		FrontLeftTyrePressure  float32 `json:"front_left_tyre_pressure"`  // Front left tyre pressure (PSI)
+		FrontRightTyrePressure float32 `json:"front_right_tyre_pressure"` // Front right tyre pressure (PSI)
+		Ballast                uint8   `json:"ballast"`                   // Ballast
+		FuelLoad               float32 `json:"fuel_load"`                 // Fuel load
 	}
 )
 
