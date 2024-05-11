@@ -33,6 +33,16 @@ type PacketMotionExData struct {
 	WheelVertForce         [4]float32   `json:"wheel_vert_force"`           // Vertical forces for each wheel
 }
 
+// GetHeader returns the header of the packet
+func (p PacketMotionExData) GetHeader() PacketHeader {
+	return p.Header
+}
+
+// Size returns the size of the packet
+func (p PacketMotionExData) Size() int {
+	return PacketMotionExDataSize
+}
+
 // ParsePacketMotionExData will parse the given data into a packet
 func ParsePacketMotionExData(decoder *encoding.Decoder) (PacketMotionExData, error) {
 	header, err := ParsePacketHeader(decoder)
@@ -45,7 +55,7 @@ func ParsePacketMotionExData(decoder *encoding.Decoder) (PacketMotionExData, err
 
 // ParsePacketMotionExDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketMotionExDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketMotionExData, error) {
-	if decoder.LeftToRead() < PacketMotionExDataSize {
+	if decoder.LeftToRead() < (PacketMotionExDataSize - header.Size()) {
 		return PacketMotionExData{}, encoding.ErrBufferNotLargeEnough
 	}
 

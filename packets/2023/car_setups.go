@@ -3,16 +3,16 @@ package f1_2023
 import "github.com/DaanV2/go-f1-library/encoding"
 
 const (
-	PacketCarSetupDataFrequency = 2
-	PacketCarSetupDataSize      = 1107
-	PacketCarSetupDataVersion   = 1
+	PacketCarSetupsDataFrequency = 2
+	PacketCarSetupsDataSize      = 1107
+	PacketCarSetupsDataVersion   = 1
 )
 
 type (
 	// This packet details the car setups for each vehicle in the session. Note that in multiplayer games,
 	// other player cars will appear as blank, you will only be able to see your own car setup,
 	// regardless of the "Your Telemetry" setting. Spectators will also not be able to see any car setups.
-	PacketCarSetupData struct {
+	PacketCarSetupsData struct {
 		Header    PacketHeader     `json:"header"` // Header
 		CarSetups [22]CarSetupData `json:"car_setups"`
 	}
@@ -43,23 +43,33 @@ type (
 	}
 )
 
+// GetHeader returns the header of the packet
+func (p PacketCarSetupsData) GetHeader() PacketHeader {
+	return p.Header
+}
+
+// Size returns the size of the packet
+func (p PacketCarSetupsData) Size() int {
+	return PacketCarSetupsDataSize
+}
+
 // ParsePacketCarSetupData will parse the given data into a packet
-func ParsePacketCarSetupData(decoder *encoding.Decoder) (PacketCarSetupData, error) {
+func ParsePacketCarSetupData(decoder *encoding.Decoder) (PacketCarSetupsData, error) {
 	header, err := ParsePacketHeader(decoder)
 	if err != nil {
-		return PacketCarSetupData{}, err
+		return PacketCarSetupsData{}, err
 	}
 
 	return ParsePacketCarSetupDataWithHeader(decoder, header)
 }
 
 // ParsePacketCarSetupDataWithHeader will parse the given data into a packet, expected the decoder is past the header
-func ParsePacketCarSetupDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketCarSetupData, error) {
-	if decoder.LeftToRead() < PacketCarSetupDataSize {
-		return PacketCarSetupData{}, encoding.ErrBufferNotLargeEnough
+func ParsePacketCarSetupDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketCarSetupsData, error) {
+	if decoder.LeftToRead() < (PacketCarSetupsDataSize - header.Size()) {
+		return PacketCarSetupsData{}, encoding.ErrBufferNotLargeEnough
 	}
 
-	return PacketCarSetupData{
+	return PacketCarSetupsData{
 		Header:    header,
 		CarSetups: parseCarSetupData(decoder),
 	}, nil

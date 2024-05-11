@@ -42,6 +42,16 @@ type (
 	}
 )
 
+// GetHeader returns the header of the packet
+func (p PacketCarDamageData) GetHeader() PacketHeader {
+	return p.Header
+}
+
+// Size returns the size of the packet
+func (p PacketCarDamageData) Size() int {
+	return PacketCarDamageDataSize
+}
+
 // ParsePacketCarDamageData will parse the given data into a packet
 func ParsePacketCarDamageData(decoder *encoding.Decoder) (PacketCarDamageData, error) {
 	header, err := ParsePacketHeader(decoder)
@@ -54,7 +64,7 @@ func ParsePacketCarDamageData(decoder *encoding.Decoder) (PacketCarDamageData, e
 
 // ParsePacketCarDamageDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketCarDamageDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketCarDamageData, error) {
-	if decoder.LeftToRead() < PacketCarDamageDataSize {
+	if decoder.LeftToRead() < (PacketCarDamageDataSize - header.Size()) {
 		return PacketCarDamageData{}, encoding.ErrBufferNotLargeEnough
 	}
 

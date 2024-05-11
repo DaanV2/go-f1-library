@@ -36,73 +36,83 @@ const (
 
 type (
 	PacketEventData struct {
-		Header          PacketHeader // Header
-		EventStringCode EventCode    // [4]uint8 Event string code, see below
-		EventDetails    interface{}  // Event details - should be interpreted differently for each type, is a pointer to a struct of type: FastestLap, Retirement, TeamMateInPits, RaceWinner, Penalty, SpeedTrap, StartLights, DriveThroughPenaltyServed, StopGoPenaltyServed, Flashback, Buttons, Overtake
+		Header          PacketHeader `json:"header"`            // Header
+		EventStringCode EventCode    `json:"event_string_code"` // [4]uint8 Event string code, see below
+		EventDetails    interface{}  `json:"event_details"`     // Event details - should be interpreted differently for each type, is a pointer to a struct of type: FastestLap, Retirement, TeamMateInPits, RaceWinner, Penalty, SpeedTrap, StartLights, DriveThroughPenaltyServed, StopGoPenaltyServed, Flashback, Buttons, Overtake
 	}
 
 	Retirement struct {
-		VehicleIdx uint8 // Vehicle index of car retiring
+		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of car retiring
 	}
 
 	TeamMateInPits struct {
-		VehicleIdx uint8 // Vehicle index of team mate
+		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of team mate
 	}
 
 	RaceWinner struct {
-		VehicleIdx uint8 // Vehicle index of the race winner
+		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of the race winner
 	}
 
 	Penalty struct {
-		PenaltyType      uint8 // Penalty type – see Appendices
-		InfringementType uint8 // Infringement type – see Appendices
-		VehicleIdx       uint8 // Vehicle index of the car the penalty is applied to
-		OtherVehicleIdx  uint8 // Vehicle index of the other car involved
-		Time             uint8 // Time gained, or time spent doing action in seconds
-		LapNum           uint8 // Lap the penalty occurred on
-		PlacesGained     uint8 // Number of places gained by this
+		PenaltyType      uint8 `json:"penalty_type"`      // Penalty type – see Appendices
+		InfringementType uint8 `json:"infringement_type"` // Infringement type – see Appendices
+		VehicleIdx       uint8 `json:"vehicle_index"`     // Vehicle index of the car the penalty is applied to
+		OtherVehicleIdx  uint8 `json:"other_vehicle_idx"` // Vehicle index of the other car involved
+		Time             uint8 `json:"time"`              // Time gained, or time spent doing action in seconds
+		LapNum           uint8 `json:"lap_num"`           // Lap the penalty occurred on
+		PlacesGained     uint8 `json:"places_gained"`     // Number of places gained by this
 	}
 
 	SpeedTrap struct {
-		VehicleIdx                 uint8   // Vehicle index of the vehicle triggering speed trap
-		Speed                      float32 // Top speed achieved in kilometres per hour
-		IsOverallFastestInSession  uint8   // Overall fastest speed in session = 1, otherwise 0
-		IsDriverFastestInSession   uint8   // Fastest speed for driver in session = 1, otherwise 0
-		FastestVehicleIdxInSession uint8   // Vehicle index of the vehicle that is the fastest in this session
-		FastestSpeedInSession      float32 // Speed of the vehicle that is the fastest in this session
+		VehicleIdx                 uint8   `json:"vehicle_index"`                  // Vehicle index of the vehicle triggering speed trap
+		Speed                      float32 `json:"speed"`                          // Top speed achieved in kilometres per hour
+		IsOverallFastestInSession  uint8   `json:"is_overall_fastest_in_session"`  // Overall fastest speed in session = 1, otherwise 0
+		IsDriverFastestInSession   uint8   `json:"is_driver_fastest_in_session"`   // Fastest speed for driver in session = 1, otherwise 0
+		FastestVehicleIdxInSession uint8   `json:"fastest_vehicle_idx_in_session"` // Vehicle index of the vehicle that is the fastest in this session
+		FastestSpeedInSession      float32 `json:"fastest_speed_in_session"`       // Speed of the vehicle that is the fastest in this session
 	}
 
 	StartLights struct {
-		NumLights uint8 // Number of lights showing
+		NumLights uint8 `json:"num_lights"` // Number of lights showing
 	}
 
 	DriveThroughPenaltyServed struct {
-		VehicleIdx uint8 // Vehicle index of the vehicle serving drive through
+		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of the vehicle serving drive through
 	}
 
 	StopGoPenaltyServed struct {
-		VehicleIdx uint8 // Vehicle index of the vehicle serving stop go
+		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of the vehicle serving stop go
 	}
 
 	Flashback struct {
-		FlashbackFrameIdentifier uint32  // Frame identifier flashed back to
-		FlashbackSessionTime     float32 // Session time flashed back to
+		FlashbackFrameIdentifier uint32  `json:"flashback_frame_identifier"` // Frame identifier flashed back to
+		FlashbackSessionTime     float32 `json:"flashback_session_time"`     // Session time flashed back to
 	}
 
 	Buttons struct {
-		ButtonStatus enums.Button // uint32, Bit flags specifying which buttons are being pressed currently - see appendices
+		ButtonStatus enums.Button `json:"button_status"` // uint32, Bit flags specifying which buttons are being pressed currently - see appendices
 	}
 
 	Overtake struct {
-		OvertakingVehicleIdx     uint8 // Vehicle index of the vehicle overtaking
-		BeingOvertakenVehicleIdx uint8 // Vehicle index of the vehicle being overtaken
+		OvertakingVehicleIdx     uint8 `json:"overtaking_vehicle_idx"`      // Vehicle index of the vehicle overtaking
+		BeingOvertakenVehicleIdx uint8 `json:"being_overtaken_vehicle_idx"` // Vehicle index of the vehicle being overtaken
 	}
 
 	FastestLap struct {
-		VehicleIdx uint8   // Vehicle index of car achieving fastest lap
-		LapTime    float32 // Lap time is in seconds
+		VehicleIdx uint8   `json:"vehicle_index"` // Vehicle index of car achieving fastest lap
+		LapTime    float32 `json:"lap_time"`      // Lap time is in seconds
 	}
 )
+
+// GetHeader returns the header of the packet
+func (p PacketEventData) GetHeader() PacketHeader {
+	return p.Header
+}
+
+// Size returns the size of the packet
+func (p PacketEventData) Size() int {
+	return PacketEventDataSize
+}
 
 // ParsePacketEventData will parse the given data into a packet
 func ParsePacketEventData(decoder *encoding.Decoder) (PacketEventData, error) {
@@ -116,7 +126,7 @@ func ParsePacketEventData(decoder *encoding.Decoder) (PacketEventData, error) {
 
 // ParsePacketEventDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketEventDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketEventData, error) {
-	if decoder.LeftToRead() < PacketEventDataSize {
+	if decoder.LeftToRead() < (PacketEventDataSize - header.Size()) {
 		return PacketEventData{}, encoding.ErrBufferNotLargeEnough
 	}
 
@@ -125,9 +135,9 @@ func ParsePacketEventDataWithHeader(decoder *encoding.Decoder, header PacketHead
 	eventDetails := parseEvent(eventStringCode, decoder)
 
 	return PacketEventData{
-		Header: header,
+		Header:          header,
 		EventStringCode: eventStringCode,
-		EventDetails: eventDetails,
+		EventDetails:    eventDetails,
 	}, nil
 }
 

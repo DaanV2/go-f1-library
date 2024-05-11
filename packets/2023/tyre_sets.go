@@ -32,6 +32,16 @@ type (
 	}
 )
 
+// GetHeader returns the header of the packet
+func (p PacketTyreSetsData) GetHeader() PacketHeader {
+	return p.Header
+}
+
+// Size returns the size of the packet
+func (p PacketTyreSetsData) Size() int {
+	return PacketTyreSetsDataSize
+}
+
 // ParsePacketTyreSetsData will parse the given data into a packet
 func ParsePacketTyreSetsData(decoder *encoding.Decoder) (PacketTyreSetsData, error) {
 	header, err := ParsePacketHeader(decoder)
@@ -44,7 +54,7 @@ func ParsePacketTyreSetsData(decoder *encoding.Decoder) (PacketTyreSetsData, err
 
 // ParsePacketTyreSetsDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketTyreSetsDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketTyreSetsData, error) {
-	if decoder.LeftToRead() < PacketTyreSetsDataSize {
+	if decoder.LeftToRead() < (PacketTyreSetsDataSize - header.Size()) {
 		return PacketTyreSetsData{}, encoding.ErrBufferNotLargeEnough
 	}
 

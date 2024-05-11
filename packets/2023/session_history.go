@@ -48,6 +48,16 @@ type (
 	}
 )
 
+// GetHeader returns the header of the packet
+func (p PacketSessionHistoryData) GetHeader() PacketHeader {
+	return p.Header
+}
+
+// Size returns the size of the packet
+func (p PacketSessionHistoryData) Size() int {
+	return PacketSessionHistoryDataSize
+}
+
 func (l *LapHistoryData) ValidLap() bool {
 	return l.LapValidBitFlags&0x01 == 0x01
 }
@@ -76,7 +86,7 @@ func ParsePacketSessionHistoryData(decoder *encoding.Decoder) (PacketSessionHist
 
 // ParsePacketSessionHistoryDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketSessionHistoryDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketSessionHistoryData, error) {
-	if decoder.LeftToRead() < PacketSessionHistoryDataSize {
+	if decoder.LeftToRead() < (PacketSessionHistoryDataSize - header.Size()) {
 		return PacketSessionHistoryData{}, encoding.ErrBufferNotLargeEnough
 	}
 

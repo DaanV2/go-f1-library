@@ -1,0 +1,179 @@
+{
+    "packets": [
+        {
+            "packet": {
+                "header": {
+                    "packet_format": 2023,
+                    "game_year": 23,
+                    "game_major_version": 1,
+                    "game_minor_version": 21,
+                    "packet_version": 1,
+                    "packet_id": 3,
+                    "session_uid": 12630033205794959082,
+                    "session_time": 1134249900,
+                    "frame_identifier": 6215,
+                    "overall_frame_identifier": 6215,
+                    "player_car_index": 0,
+                    "secondary_player_car_index": 255
+                },
+                "event_string_code": "BUTN",
+                "event_details": { "button_status": 4 }
+            },
+            "data": "5wcXARUBA+ruy6xI5EavYUebQ0cYAABHGAAAAP9CVVROBAAAAFoXLVdaFy1X"
+        },
+        {
+            "packet": {
+                "header": {
+                    "packet_format": 2023,
+                    "game_year": 23,
+                    "game_major_version": 1,
+                    "game_minor_version": 21,
+                    "packet_version": 1,
+                    "packet_id": 3,
+                    "session_uid": 12630033205794959082,
+                    "session_time": 1134249900,
+                    "frame_identifier": 6215,
+                    "overall_frame_identifier": 6215,
+                    "player_car_index": 0,
+                    "secondary_player_car_index": 255
+                },
+                "event_string_code": "BUTN",
+                "event_details": { "button_status": 0 }
+            },
+            "data": "5wcXARUBA+ruy6xI5EavYUebQ0cYAABHGAAAAP9CVVROAAAAAFoXLVdaFy1X"
+        },
+        {
+            "packet": {
+                "header": {
+                    "packet_format": 2023,
+                    "game_year": 23,
+                    "game_major_version": 1,
+                    "game_minor_version": 21,
+                    "packet_version": 1,
+                    "packet_id": 3,
+                    "session_uid": 12630033205794959082,
+                    "session_time": 1134337300,
+                    "frame_identifier": 6269,
+                    "overall_frame_identifier": 6269,
+                    "player_car_index": 0,
+                    "secondary_player_car_index": 255
+                },
+                "event_string_code": "SPTP",
+                "event_details": {
+                    "vehicle_index": 0,
+                    "speed": 328.52563,
+                    "is_overall_fastest_in_session": 0,
+                    "is_driver_fastest_in_session": 0,
+                    "fastest_vehicle_idx_in_session": 0,
+                    "fastest_speed_in_session": 333.04544
+                }
+            },
+            "data": "5wcXARUBA+ruy6xI5Eav/ZycQ30YAAB9GAAAAP9TUFRQAEhDpEMAAADRhaZD"
+        },
+        {
+            "packet": {
+                "header": {
+                    "packet_format": 2023,
+                    "game_year": 23,
+                    "game_major_version": 1,
+                    "game_minor_version": 21,
+                    "packet_version": 1,
+                    "packet_id": 3,
+                    "session_uid": 12630033205794959082,
+                    "session_time": 1137132900,
+                    "frame_identifier": 7975,
+                    "overall_frame_identifier": 7975,
+                    "player_car_index": 0,
+                    "secondary_player_car_index": 255
+                },
+                "event_string_code": "BUTN",
+                "event_details": { "button_status": 32 }
+            },
+            "data": "5wcXARUBA+ruy6xI5EavmUXHQycfAAAnHwAAAP9CVVROIAAAAFoXLVdaFy1X"
+        },
+        {
+            "packet": {
+                "header": {
+                    "packet_format": 2023,
+                    "game_year": 23,
+                    "game_major_version": 1,
+                    "game_minor_version": 21,
+                    "packet_version": 1,
+                    "packet_id": 3,
+                    "session_uid": 12630033205794959082,
+                    "session_time": 1137136000,
+                    "frame_identifier": 7977,
+                    "overall_frame_identifier": 7977,
+                    "player_car_index": 0,
+                    "secondary_player_car_index": 255
+                },
+                "event_string_code": "BUTN",
+                "event_details": { "button_status": 0 }
+            },
+            "data": "5wcXARUBA+ruy6xI5EavVVHHQykfAAApHwAAAP9CVVROAAAAAFoXLVdaFy1X"
+        },
+        {
+            "packet": {
+                "header": {
+                    "packet_format": 2023,
+                    "game_year": 23,
+                    "game_major_version": 1,
+                    "game_minor_version": 21,
+                    "packet_version": 1,
+                    "packet_id": 3,
+                    "session_uid": 12630033205794959082,
+                    "session_time": 1137215900,
+                    "frame_identifier": 8026,
+                    "overall_frame_identifier": 8026,
+                    "player_car_index": 0,
+                    "secondary_player_car_index": 255
+                },
+                "event_string_code": "FTLP",
+                "event_details": { "vehicle_index": 0, "lap_time": 94.351006 }
+            },
+            "data": "5wcXARUBA+ruy6xI5EavRonIQ1ofAABaHwAAAP9GVExQALezvEIAAAAAAAAA"
+        },
+        {
+            "packet": {
+                "header": {
+                    "packet_format": 2023,
+                    "game_year": 23,
+                    "game_major_version": 1,
+                    "game_minor_version": 21,
+                    "packet_version": 1,
+                    "packet_id": 3,
+                    "session_uid": 12630033205794959082,
+                    "session_time": 1137265300,
+                    "frame_identifier": 8056,
+                    "overall_frame_identifier": 8056,
+                    "player_car_index": 0,
+                    "secondary_player_car_index": 255
+                },
+                "event_string_code": "BUTN",
+                "event_details": { "button_status": 4 }
+            },
+            "data": "5wcXARUBA+ruy6xI5EavuErJQ3gfAAB4HwAAAP9CVVROBAAAAFoXLVdaFy1X"
+        },
+        {
+            "packet": {
+                "header": {
+                    "packet_format": 2023,
+                    "game_year": 23,
+                    "game_major_version": 1,
+                    "game_minor_version": 21,
+                    "packet_version": 1,
+                    "packet_id": 3,
+                    "session_uid": 12630033205794959082,
+                    "session_time": 1137265300,
+                    "frame_identifier": 8056,
+                    "overall_frame_identifier": 8056,
+                    "player_car_index": 0,
+                    "secondary_player_car_index": 255
+                },
+                "event_string_code": "BUTN",
+                "event_details": { "button_status": 0 }
+            },
+            "data": "5wcXARUBA+ruy6xI5EavuErJQ3gfAAB4HwAAAP9CVVROAAAAAFoXLVdaFy1X"
+        }
+    ]
+}

@@ -1,5 +1,7 @@
 package enums
 
+import "github.com/DaanV2/go-f1-library/constants"
+
 type PacketId uint8
 
 const (
@@ -18,3 +20,38 @@ const (
 	TyreSets            PacketId = 12 // Extended tyre set data
 	MotionEx            PacketId = 13 // Extended motion data for player car
 )
+
+func (p PacketId) String() string {
+	switch p {
+	case Motion:
+		return "Motion"
+	case Session:
+		return "Session"
+	case LapData:
+		return "LapData"
+	case Event:
+		return "Event"
+	case Participants:
+		return "Participants"
+	case CarSetups:
+		return "CarSetups"
+	case CarTelemetry:
+		return "CarTelemetry"
+	case CarStatus:
+		return "CarStatus"
+	case FinalClassification:
+		return "FinalClassification"
+	case LobbyInfo:
+		return "LobbyInfo"
+	case CarDamage:
+		return "CarDamage"
+	case SessionHistory:
+		return "SessionHistory"
+	case TyreSets:
+		return "TyreSets"
+	case MotionEx:
+		return "MotionEx"
+	}
+
+	return constants.UNKNOWN
+}

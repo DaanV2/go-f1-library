@@ -35,6 +35,16 @@ type (
 	}
 )
 
+// GetHeader returns the header of the packet
+func (p PacketParticipantsData) GetHeader() PacketHeader {
+	return p.Header
+}
+
+// Size returns the size of the packet
+func (p PacketParticipantsData) Size() int {
+	return PacketParticipantsDataSize
+}
+
 func (p *ParticipantData) ParticipantName() string {
 	return c.String(p.Name[:])
 }
@@ -51,7 +61,7 @@ func ParsePacketParticipantsData(decoder *encoding.Decoder) (PacketParticipantsD
 
 // ParsePacketParticipantsDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketParticipantsDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketParticipantsData, error) {
-	if decoder.LeftToRead() < PacketParticipantsDataSize {
+	if decoder.LeftToRead() < (PacketParticipantsDataSize - header.Size()) {
 		return PacketParticipantsData{}, encoding.ErrBufferNotLargeEnough
 	}
 

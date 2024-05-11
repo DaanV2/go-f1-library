@@ -6,3 +6,6 @@ test:
 
 coverage-report: test
 	go tool cover -html=reports/coverage.out
+
+local-upd-server:
+	go run cmd/upd/main.go

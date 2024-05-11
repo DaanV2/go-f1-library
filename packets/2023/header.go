@@ -24,6 +24,11 @@ type PacketHeader struct {
 	SecondaryPlayerCarIndex uint8              `json:"secondary_player_car_index"` // Index of secondary player's car in the array (splitscreen), 255 if no second player
 }
 
+// Size returns the size of the packet
+func (p PacketHeader) Size() int {
+	return PacketHeaderSize
+}
+
 // PacketFormat returns the format of the packet
 func (p *PacketHeader) PlayerIndex() uint8 {
 	return p.PlayerCarIndex

@@ -83,6 +83,16 @@ type (
 	}
 )
 
+// GetHeader returns the header of the packet
+func (p PacketSessionData) GetHeader() PacketHeader {
+	return p.Header
+}
+
+// Size returns the size of the packet
+func (p PacketSessionData) Size() int {
+	return PacketSessionDataSize
+}
+
 // ParsePacketSessionData will parse the given data into a packet
 func ParsePacketSessionData(decoder *encoding.Decoder) (PacketSessionData, error) {
 	header, err := ParsePacketHeader(decoder)
@@ -95,7 +105,7 @@ func ParsePacketSessionData(decoder *encoding.Decoder) (PacketSessionData, error
 
 // ParsePacketSessionDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketSessionDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketSessionData, error) {
-	if decoder.LeftToRead() < PacketSessionDataSize {
+	if decoder.LeftToRead() < (PacketSessionDataSize - header.Size()) {
 		return PacketSessionData{}, encoding.ErrBufferNotLargeEnough
 	}
 
