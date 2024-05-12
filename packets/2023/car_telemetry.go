@@ -62,7 +62,7 @@ func ParsePacketCarTelemetryData(decoder *encoding.Decoder) (PacketCarTelemetryD
 // ParsePacketCarTelemetryDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketCarTelemetryDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketCarTelemetryData, error) {
 	if decoder.LeftToRead() < (PacketCarTelemetryDataSize - header.Size()) {
-		return PacketCarTelemetryData{}, encoding.ErrBufferNotLargeEnough
+		return PacketCarTelemetryData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	packet := PacketCarTelemetryData{

@@ -177,7 +177,7 @@ func ParsePacketEventData(decoder *encoding.Decoder) (PacketEventData, error) {
 // ParsePacketEventDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketEventDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketEventData, error) {
 	if decoder.LeftToRead() < (PacketEventDataSize - header.Size()) {
-		return PacketEventData{}, encoding.ErrBufferNotLargeEnough
+		return PacketEventData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	esc := encoding.Read4Times(decoder.Byte)

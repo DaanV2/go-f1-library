@@ -46,7 +46,7 @@ func (p *PacketHeader) HasSecondaryPlayer() bool {
 // ParsePacketHeader will deserialise a byte slice into a PacketHeader, expects the slice to be 29 bytes long
 func ParsePacketHeader(decoder *encoding.Decoder) (PacketHeader, error) {
 	if decoder.LeftToRead() < PacketHeaderSize {
-		return PacketHeader{}, encoding.ErrBufferNotLargeEnough
+		return PacketHeader{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	return PacketHeader{

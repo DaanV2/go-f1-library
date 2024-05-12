@@ -61,7 +61,7 @@ func ParsePacketLobbyInfoData(decoder *encoding.Decoder) (PacketLobbyInfoData, e
 // ParsePacketLobbyInfoDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketLobbyInfoDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketLobbyInfoData, error) {
 	if decoder.LeftToRead() < (PacketLobbyInfoDataSize - header.Size()) {
-		return PacketLobbyInfoData{}, encoding.ErrBufferNotLargeEnough
+		return PacketLobbyInfoData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	packet := PacketLobbyInfoData{

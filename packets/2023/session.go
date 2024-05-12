@@ -106,7 +106,7 @@ func ParsePacketSessionData(decoder *encoding.Decoder) (PacketSessionData, error
 // ParsePacketSessionDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketSessionDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketSessionData, error) {
 	if decoder.LeftToRead() < (PacketSessionDataSize - header.Size()) {
-		return PacketSessionData{}, encoding.ErrBufferNotLargeEnough
+		return PacketSessionData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	return PacketSessionData{

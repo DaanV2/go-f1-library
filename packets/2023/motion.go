@@ -58,7 +58,7 @@ func ParsePacketMotionData(decoder *encoding.Decoder) (PacketMotionData, error) 
 // ParsePacketMotionDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketMotionDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketMotionData, error) {
 	if decoder.LeftToRead() < (PacketMotionDataSize - header.Size()) {
-		return PacketMotionData{}, encoding.ErrBufferNotLargeEnough
+		return PacketMotionData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	packet := PacketMotionData{

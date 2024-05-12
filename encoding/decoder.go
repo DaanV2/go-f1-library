@@ -37,6 +37,22 @@ func (d *Decoder) LeftToRead() int {
 	return d.Len() - d.Index()
 }
 
+func (d *Decoder) IsLargeEnough(size int) error {
+	if d.Len() < size {
+		return BufferNotLargeEnoughError{ExpectedSize: size, ActualSize: d.LeftToRead()}
+	}
+
+	return nil
+}
+
+func (d *Decoder) HasEnoughLeft(still_to_read int) error {
+	if d.LeftToRead() < still_to_read {
+		return BufferNotLargeEnoughError{ExpectedSize: still_to_read, ActualSize: d.LeftToRead()}
+	}
+
+	return nil
+}
+
 // Read reads the buffer into the given byte slice
 func (d *Decoder) Read(p []byte) int {
 	n := copy(p, d.buffer[d.index:])

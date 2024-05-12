@@ -66,7 +66,7 @@ func ParsePacketCarSetupData(decoder *encoding.Decoder) (PacketCarSetupsData, er
 // ParsePacketCarSetupDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketCarSetupDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketCarSetupsData, error) {
 	if decoder.LeftToRead() < (PacketCarSetupsDataSize - header.Size()) {
-		return PacketCarSetupsData{}, encoding.ErrBufferNotLargeEnough
+		return PacketCarSetupsData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	return PacketCarSetupsData{

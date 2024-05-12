@@ -55,7 +55,7 @@ func ParsePacketTyreSetsData(decoder *encoding.Decoder) (PacketTyreSetsData, err
 // ParsePacketTyreSetsDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketTyreSetsDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketTyreSetsData, error) {
 	if decoder.LeftToRead() < (PacketTyreSetsDataSize - header.Size()) {
-		return PacketTyreSetsData{}, encoding.ErrBufferNotLargeEnough
+		return PacketTyreSetsData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	return PacketTyreSetsData{

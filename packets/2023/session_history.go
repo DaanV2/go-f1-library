@@ -87,7 +87,7 @@ func ParsePacketSessionHistoryData(decoder *encoding.Decoder) (PacketSessionHist
 // ParsePacketSessionHistoryDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketSessionHistoryDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketSessionHistoryData, error) {
 	if decoder.LeftToRead() < (PacketSessionHistoryDataSize - header.Size()) {
-		return PacketSessionHistoryData{}, encoding.ErrBufferNotLargeEnough
+		return PacketSessionHistoryData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	return PacketSessionHistoryData{

@@ -65,7 +65,7 @@ func ParsePacketCarDamageData(decoder *encoding.Decoder) (PacketCarDamageData, e
 // ParsePacketCarDamageDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketCarDamageDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketCarDamageData, error) {
 	if decoder.LeftToRead() < (PacketCarDamageDataSize - header.Size()) {
-		return PacketCarDamageData{}, encoding.ErrBufferNotLargeEnough
+		return PacketCarDamageData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	return PacketCarDamageData{

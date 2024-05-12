@@ -72,7 +72,7 @@ func ParsePacketLapData(decoder *encoding.Decoder) (PacketLapData, error) {
 // ParsePacketLapDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketLapDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketLapData, error) {
 	if decoder.LeftToRead() < (PacketLapDataSize - header.Size()) {
-		return PacketLapData{}, encoding.ErrBufferNotLargeEnough
+		return PacketLapData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	packet := PacketLapData{

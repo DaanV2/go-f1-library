@@ -58,7 +58,7 @@ func ParsePacketFinalClassificationData(decoder *encoding.Decoder) (PacketFinalC
 // ParsePacketFinalClassificationDataWithHeader will parse the given data into a packet, expected the decoder is past the header
 func ParsePacketFinalClassificationDataWithHeader(decoder *encoding.Decoder, header PacketHeader) (PacketFinalClassificationData, error) {
 	if decoder.LeftToRead() < (PacketFinalClassificationDataSize - header.Size()) {
-		return PacketFinalClassificationData{}, encoding.ErrBufferNotLargeEnough
+		return PacketFinalClassificationData{}, encoding.NewBufferNotLargeEnoughError(PacketCarDamageDataSize, decoder.LeftToRead())
 	}
 
 	return PacketFinalClassificationData{

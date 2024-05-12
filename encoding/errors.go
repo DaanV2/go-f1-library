@@ -1,8 +1,19 @@
 package encoding
 
-import "errors"
+import "fmt"
 
-var (
-	// ErrBufferNotLargeEnough is returned when the buffer is not large enough to read the requested data
-	ErrBufferNotLargeEnough = errors.New("buffer not large enough")
-)
+type BufferNotLargeEnoughError struct {
+	ExpectedSize int
+	ActualSize   int
+}
+
+func (e BufferNotLargeEnoughError) Error() string {
+	return fmt.Sprintf("buffer not large enough, expected %d, got %d", e.ExpectedSize, e.ActualSize)
+}
+
+func NewBufferNotLargeEnoughError(expectedSize, actualSize int) BufferNotLargeEnoughError {
+	return BufferNotLargeEnoughError{
+		ExpectedSize: expectedSize,
+		ActualSize:   actualSize,
+	}
+}
