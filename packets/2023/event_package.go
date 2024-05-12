@@ -1,6 +1,8 @@
 package f1_2023
 
 import (
+	"encoding/json"
+
 	"github.com/DaanV2/go-f1-library/encoding"
 	"github.com/DaanV2/go-f1-library/enums"
 )
@@ -41,26 +43,49 @@ type (
 		EventDetails    interface{}  `json:"event_details"`     // Event details - should be interpreted differently for each type, is a pointer to a struct of type: FastestLap, Retirement, TeamMateInPits, RaceWinner, Penalty, SpeedTrap, StartLights, DriveThroughPenaltyServed, StopGoPenaltyServed, Flashback, Buttons, Overtake
 	}
 
-	Retirement struct {
-		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of car retiring
+	Buttons struct {
+		ButtonStatus enums.Button `json:"button_status"` // uint32, Bit flags specifying which buttons are being pressed currently - see appendices
 	}
 
-	TeamMateInPits struct {
-		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of team mate
+	DriveThroughPenaltyServed struct {
+		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of the vehicle serving drive through
+	}
+
+	Flashback struct {
+		FlashbackFrameIdentifier uint32  `json:"flashback_frame_identifier"` // Frame identifier flashed back to
+		FlashbackSessionTime     float32 `json:"flashback_session_time"`     // Session time flashed back to
+	}
+
+	FastestLap struct {
+		VehicleIdx uint8   `json:"vehicle_index"` // Vehicle index of car achieving fastest lap
+		LapTime    float32 `json:"lap_time"`      // Lap time is in seconds
+	}
+
+	Overtake struct {
+		OvertakingVehicleIdx     uint8 `json:"overtaking_vehicle_idx"`      // Vehicle index of the vehicle overtaking
+		BeingOvertakenVehicleIdx uint8 `json:"being_overtaken_vehicle_idx"` // Vehicle index of the vehicle being overtaken
+	}
+
+	Penalty struct {
+		PenaltyType      PenaltyType      `json:"penalty_type"`      // uint8, Penalty type – see Appendices
+		InfringementType InfringementType `json:"infringement_type"` // uint8, Infringement type – see Appendices
+		VehicleIdx       uint8            `json:"vehicle_index"`     // Vehicle index of the car the penalty is applied to
+		OtherVehicleIdx  uint8            `json:"other_vehicle_idx"` // Vehicle index of the other car involved
+		Time             uint8            `json:"time"`              // Time gained, or time spent doing action in seconds
+		LapNum           uint8            `json:"lap_num"`           // Lap the penalty occurred on
+		PlacesGained     uint8            `json:"places_gained"`     // Number of places gained by this
 	}
 
 	RaceWinner struct {
 		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of the race winner
 	}
 
-	Penalty struct {
-		PenaltyType      uint8 `json:"penalty_type"`      // Penalty type – see Appendices
-		InfringementType uint8 `json:"infringement_type"` // Infringement type – see Appendices
-		VehicleIdx       uint8 `json:"vehicle_index"`     // Vehicle index of the car the penalty is applied to
-		OtherVehicleIdx  uint8 `json:"other_vehicle_idx"` // Vehicle index of the other car involved
-		Time             uint8 `json:"time"`              // Time gained, or time spent doing action in seconds
-		LapNum           uint8 `json:"lap_num"`           // Lap the penalty occurred on
-		PlacesGained     uint8 `json:"places_gained"`     // Number of places gained by this
+	Retirement struct {
+		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of car retiring
+	}
+
+	StartLights struct {
+		NumLights uint8 `json:"num_lights"` // Number of lights showing
 	}
 
 	SpeedTrap struct {
@@ -72,35 +97,12 @@ type (
 		FastestSpeedInSession      float32 `json:"fastest_speed_in_session"`       // Speed of the vehicle that is the fastest in this session
 	}
 
-	StartLights struct {
-		NumLights uint8 `json:"num_lights"` // Number of lights showing
-	}
-
-	DriveThroughPenaltyServed struct {
-		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of the vehicle serving drive through
+	TeamMateInPits struct {
+		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of team mate
 	}
 
 	StopGoPenaltyServed struct {
 		VehicleIdx uint8 `json:"vehicle_index"` // Vehicle index of the vehicle serving stop go
-	}
-
-	Flashback struct {
-		FlashbackFrameIdentifier uint32  `json:"flashback_frame_identifier"` // Frame identifier flashed back to
-		FlashbackSessionTime     float32 `json:"flashback_session_time"`     // Session time flashed back to
-	}
-
-	Buttons struct {
-		ButtonStatus enums.Button `json:"button_status"` // uint32, Bit flags specifying which buttons are being pressed currently - see appendices
-	}
-
-	Overtake struct {
-		OvertakingVehicleIdx     uint8 `json:"overtaking_vehicle_idx"`      // Vehicle index of the vehicle overtaking
-		BeingOvertakenVehicleIdx uint8 `json:"being_overtaken_vehicle_idx"` // Vehicle index of the vehicle being overtaken
-	}
-
-	FastestLap struct {
-		VehicleIdx uint8   `json:"vehicle_index"` // Vehicle index of car achieving fastest lap
-		LapTime    float32 `json:"lap_time"`      // Lap time is in seconds
 	}
 )
 
@@ -112,6 +114,54 @@ func (p PacketEventData) GetHeader() PacketHeader {
 // Size returns the size of the packet
 func (p PacketEventData) Size() int {
 	return PacketEventDataSize
+}
+
+type subSection struct {
+	Header          PacketHeader `json:"header"`
+	EventStringCode EventCode    `json:"event_string_code"`
+}
+
+type typedEventDetails[T any] struct {
+	EventDetails T `json:"event_details"`
+}
+
+func (p *PacketEventData) UnmarshalJSON(data []byte) error {
+	var sub subSection
+	if err := json.Unmarshal(data, &sub); err != nil {
+		return err
+	}
+
+	p.Header = sub.Header
+	p.EventStringCode = sub.EventStringCode
+
+	switch sub.EventStringCode {
+	case EC_FastestLap:
+		return unmarshalEvent[FastestLap](p, data)
+	case EC_Retirement:
+		return unmarshalEvent[Retirement](p, data)
+	case EC_TeamMateInPits:
+		return unmarshalEvent[TeamMateInPits](p, data)
+	case EC_RaceWinner:
+		return unmarshalEvent[RaceWinner](p, data)
+	case EC_PenaltyIssued:
+		return unmarshalEvent[Penalty](p, data)
+	case EC_SpeedTrapTriggered:
+		return unmarshalEvent[SpeedTrap](p, data)
+	case EC_StartLights:
+		return unmarshalEvent[StartLights](p, data)
+	case EC_DriveThroughServed:
+		return unmarshalEvent[DriveThroughPenaltyServed](p, data)
+	case EC_StopGoServed:
+		return unmarshalEvent[StopGoPenaltyServed](p, data)
+	case EC_Flashback:
+		return unmarshalEvent[Flashback](p, data)
+	case EC_ButtonStatus:
+		return unmarshalEvent[Buttons](p, data)
+	case EC_Overtake:
+		return unmarshalEvent[Overtake](p, data)
+	}
+
+	return nil
 }
 
 // ParsePacketEventData will parse the given data into a packet
@@ -139,6 +189,15 @@ func ParsePacketEventDataWithHeader(decoder *encoding.Decoder, header PacketHead
 		EventStringCode: eventStringCode,
 		EventDetails:    eventDetails,
 	}, nil
+}
+
+func unmarshalEvent[T any](p *PacketEventData, data []byte) error {
+	var details typedEventDetails[T]
+	if err := json.Unmarshal(data, &details); err != nil {
+		return err
+	}
+	p.EventDetails = details.EventDetails
+	return nil
 }
 
 func parseEvent(eventCode EventCode, decoder *encoding.Decoder) any {
@@ -199,8 +258,8 @@ func parseRaceWinner(decoder *encoding.Decoder) RaceWinner {
 
 func parsePenalty(decoder *encoding.Decoder) Penalty {
 	return Penalty{
-		PenaltyType:      decoder.Uint8(),
-		InfringementType: decoder.Uint8(),
+		PenaltyType:      PenaltyType(decoder.Uint8()),
+		InfringementType: InfringementType(decoder.Uint8()),
 		VehicleIdx:       decoder.Uint8(),
 		OtherVehicleIdx:  decoder.Uint8(),
 		Time:             decoder.Uint8(),

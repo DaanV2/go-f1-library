@@ -2,8 +2,10 @@ package game
 
 // Game is a generic interface for a game version
 type Game struct {
-	Drivers       Drivers // Drivers
+	Drivers       Drivers       // Drivers
 	Nationalities Nationalities // Nationalities
-	Teams         Teams // Teams
-	Tracks        Tracks // Tracks
+	Teams         Teams         // Teams
+	Tracks        Tracks        // Tracks
+	Penalties     Penalties     // Penalties
+	Infringements Infringements // Infringements
 }
