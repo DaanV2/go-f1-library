@@ -87,7 +87,7 @@ func Test_PacketEventData_Json_Marshal(t *testing.T) {
 		{
 			EventStringCode: f1_2023.EC_ButtonStatus,
 			EventDetails: f1_2023.Buttons{
-				ButtonStatus: enums.DPadLeft,
+				ButtonStatus: enums.BUT_DPadLeft,
 			},
 		},
 		{

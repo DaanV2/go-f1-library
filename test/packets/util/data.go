@@ -126,33 +126,33 @@ func (r *Results) AddPacket(parser *f1_2023.PacketParser, data []byte) {
 
 	if packet == nil {
 		switch header.PacketId {
-		case enums.Motion:
+		case enums.PID_Motion:
 			r.PacketMotion.Add(nil, err, data)
-		case enums.Session:
+		case enums.PID_Session:
 			r.PacketSession.Add(nil, err, data)
-		case enums.LapData:
+		case enums.PID_LapData:
 			r.PacketLapData.Add(nil, err, data)
-		case enums.Event:
+		case enums.PID_Event:
 			r.PacketEvent.Add(nil, err, data)
-		case enums.Participants:
+		case enums.PID_Participants:
 			r.PacketParticipants.Add(nil, err, data)
-		case enums.CarSetups:
+		case enums.PID_CarSetups:
 			r.PacketCarSetups.Add(nil, err, data)
-		case enums.CarTelemetry:
+		case enums.PID_CarTelemetry:
 			r.PacketCarTelemetry.Add(nil, err, data)
-		case enums.CarStatus:
+		case enums.PID_CarStatus:
 			r.PacketCarStatus.Add(nil, err, data)
-		case enums.FinalClassification:
+		case enums.PID_FinalClassification:
 			r.PacketFinalClassification.Add(nil, err, data)
-		case enums.LobbyInfo:
+		case enums.PID_LobbyInfo:
 			r.PacketLobbyInfo.Add(nil, err, data)
-		case enums.CarDamage:
+		case enums.PID_CarDamage:
 			r.PacketCarDamage.Add(nil, err, data)
-		case enums.SessionHistory:
+		case enums.PID_SessionHistory:
 			r.PacketSessionHistory.Add(nil, err, data)
-		case enums.TyreSets:
+		case enums.PID_TyreSets:
 			r.PacketTyreSets.Add(nil, err, data)
-		case enums.MotionEx:
+		case enums.PID_MotionEx:
 			r.PacketMotionEx.Add(nil, err, data)
 		}
 	}

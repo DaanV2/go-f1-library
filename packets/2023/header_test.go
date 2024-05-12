@@ -13,7 +13,7 @@ import (
 func Test_DeserializePacketHeader(t *testing.T) {
 	data := make([]byte, 29)
 
-	binary.LittleEndian.PutUint16(data[0:2], uint16(enums.F1_2023))
+	binary.LittleEndian.PutUint16(data[0:2], uint16(enums.PF_F1_2023))
 	data[2] = 23                                  // Game year
 	data[3] = 1                                   // Game major version
 	data[4] = 0                                   // Game version
@@ -30,12 +30,12 @@ func Test_DeserializePacketHeader(t *testing.T) {
 	packet, err := f1_2023.ParsePacketHeader(decoder)
 	require.NoError(t, err)
 
-	require.Equal(t, enums.F1_2023, packet.PacketFormat)
+	require.Equal(t, enums.PF_F1_2023, packet.PacketFormat)
 	require.Equal(t, uint8(23), packet.GameYear)
 	require.Equal(t, uint8(1), packet.GameMajorVersion)
 	require.Equal(t, uint8(0), packet.GameMinorVersion)
 	require.Equal(t, uint8(1), packet.PacketVersion)
-	require.Equal(t, enums.Motion, packet.PacketId)
+	require.Equal(t, enums.PID_Motion, packet.PacketId)
 	require.Equal(t, uint64(0), packet.SessionUID)
 	require.Equal(t, float32(0), packet.SessionTime)
 	require.Equal(t, uint32(0), packet.FrameIdentifier)

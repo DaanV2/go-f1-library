@@ -51,7 +51,7 @@ func Parse_Tests[T any](PacketTyreSets *test_util.DataPoints[T], parse func(deco
 					// require.Equal(t, data.Packet, &packet)
 
 					header := p.GetHeader()
-					require.Equal(t, header.PacketFormat, enums.F1_2023)
+					require.Equal(t, header.PacketFormat, enums.PF_F1_2023)
 					require.GreaterOrEqual(t, header.GameMajorVersion, uint8(1))
 					require.GreaterOrEqual(t, header.GameMinorVersion, uint8(20))
 					require.Equal(t, header.GameYear, uint8(23))

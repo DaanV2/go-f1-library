@@ -106,33 +106,33 @@ func (p *PacketParser) ParsePacket(decoder *encoding.Decoder) (Packet, error) {
 	}
 
 	switch header.PacketId {
-	case enums.Motion:
+	case enums.PID_Motion:
 		return p.PacketMotionData(decoder, header)
-	case enums.Session:
+	case enums.PID_Session:
 		return p.PacketSessionData(decoder, header)
-	case enums.LapData:
+	case enums.PID_LapData:
 		return p.PacketLapData(decoder, header)
-	case enums.Event:
+	case enums.PID_Event:
 		return p.PacketEventData(decoder, header)
-	case enums.Participants:
+	case enums.PID_Participants:
 		return p.PacketParticipantsData(decoder, header)
-	case enums.CarSetups:
+	case enums.PID_CarSetups:
 		return p.PacketCarSetupData(decoder, header)
-	case enums.CarTelemetry:
+	case enums.PID_CarTelemetry:
 		return p.PacketCarTelemetryData(decoder, header)
-	case enums.CarStatus:
+	case enums.PID_CarStatus:
 		return p.PacketCarStatusData(decoder, header)
-	case enums.FinalClassification:
+	case enums.PID_FinalClassification:
 		return p.PacketFinalClassificationData(decoder, header)
-	case enums.LobbyInfo:
+	case enums.PID_LobbyInfo:
 		return p.PacketLobbyInfoData(decoder, header)
-	case enums.CarDamage:
+	case enums.PID_CarDamage:
 		return p.PacketCarDamageData(decoder, header)
-	case enums.SessionHistory:
+	case enums.PID_SessionHistory:
 		return p.PacketSessionHistoryData(decoder, header)
-	case enums.TyreSets:
+	case enums.PID_TyreSets:
 		return p.PacketTyreSetsData(decoder, header)
-	case enums.MotionEx:
+	case enums.PID_MotionEx:
 		return p.PacketMotionExData(decoder, header)
 	}
 
