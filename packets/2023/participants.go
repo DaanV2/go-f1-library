@@ -1,8 +1,8 @@
 package f1_2023
 
 import (
-	"github.com/DaanV2/go-f1-library/c"
 	"github.com/DaanV2/go-f1-library/encoding"
+	"github.com/DaanV2/go-f1-library/internal/c"
 )
 
 const (
