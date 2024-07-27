@@ -1,10 +1,12 @@
 package encoding
 
+// Decoder handles reading of a buffer and moving the index forward
 type Decoder struct {
 	buffer []byte
 	index  int
 }
 
+// NewDecoder creates a decoding struct around the given buffer
 func NewDecoder(buffer []byte) *Decoder {
 	return &Decoder{
 		buffer: buffer,
@@ -37,6 +39,7 @@ func (d *Decoder) LeftToRead() int {
 	return d.Len() - d.Index()
 }
 
+// IsLargeEnough checks if the given buffer if large enough to read the given amount
 func (d *Decoder) IsLargeEnough(size int) error {
 	if d.Len() < size {
 		return BufferNotLargeEnoughError{ExpectedSize: size, ActualSize: d.LeftToRead()}
@@ -45,6 +48,8 @@ func (d *Decoder) IsLargeEnough(size int) error {
 	return nil
 }
 
+// HasEnoughLeft checks if the given amount of bytes still left to read
+// are still large enough for the given value
 func (d *Decoder) HasEnoughLeft(still_to_read int) error {
 	if d.LeftToRead() < still_to_read {
 		return BufferNotLargeEnoughError{ExpectedSize: still_to_read, ActualSize: d.LeftToRead()}
@@ -60,6 +65,7 @@ func (d *Decoder) Read(p []byte) int {
 	return n
 }
 
+// Read48 reads 48 bytes from the buffer, and move the index by 48
 func (d *Decoder) Read48() [48]byte {
 	var v [48]byte
 	d.Read(v[:])

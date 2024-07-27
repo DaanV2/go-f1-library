@@ -2,6 +2,8 @@ package encoding
 
 import "fmt"
 
+// BufferNotLargeEnoughError is used to display, and tell the user about
+// The buffer that isn't large enough, and how much it was expecting.
 type BufferNotLargeEnoughError struct {
 	ExpectedSize int
 	ActualSize   int
