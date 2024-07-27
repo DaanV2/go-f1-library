@@ -5,7 +5,6 @@ import (
 	"math"
 )
 
-// Int16 converts the given bytes into a int16, as formatted by the spec
 // Uint8 converts the given byte into a uint8, as formatted by the spec
 func Uint8(buf byte) uint8 {
 	return uint8(buf)
